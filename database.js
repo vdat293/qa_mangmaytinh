@@ -4,7 +4,7 @@ const User = require('./models/User');
 
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect('mongodb+srv://noradmin:noradmin123@qanhomhoctap.c0pzduh.mongodb.net/?appName=qanhomhoctap');
+        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://noradmin:noradmin123@qanhomhoctap.c0pzduh.mongodb.net/?appName=qanhomhoctap');
         console.log(`MongoDB Connected: ${conn.connection.host}`);
 
         // Initialize default admin
