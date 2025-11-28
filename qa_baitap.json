@@ -1,0 +1,442 @@
+[
+  {
+    "id": 601,
+    "question": "[Lab 4 - Static Route] Lệnh nào sau đây cấu hình đúng một đường đi tĩnh đến mạng 192.168.2.0/24 thông qua cổng Serial 0/0/0?",
+    "options": [
+      "A. ip route 192.168.2.0 255.255.255.0 Serial0/0/0",
+      "B. ip route 192.168.2.0 0.0.0.255 Serial0/0/0",
+      "C. ip route Serial0/0/0 192.168.2.0 255.255.255.0",
+      "D. router static 192.168.2.0 255.255.255.0 Serial0/0/0"
+    ],
+    "answer": "A. ip route 192.168.2.0 255.255.255.0 Serial0/0/0"
+  },
+  {
+    "id": 602,
+    "question": "[Lab 4 - Static Route] Administrative Distance (AD) mặc định của một Static Route là bao nhiêu?",
+    "options": [
+      "A. 0",
+      "B. 1",
+      "C. 5",
+      "D. 90"
+    ],
+    "answer": "B. 1"
+  },
+  {
+    "id": 603,
+    "question": "[Lab 5 - DHCP] Lệnh nào dùng để cấu hình địa chỉ DNS Server sẽ cấp cho các DHCP Client?",
+    "options": [
+      "A. domain-name google.com",
+      "B. ip name-server 8.8.8.8",
+      "C. dns-server 8.8.8.8",
+      "D. name-server 8.8.8.8"
+    ],
+    "answer": "C. dns-server 8.8.8.8"
+  },
+  {
+    "id": 604,
+    "question": "[Lab 5 - DHCP Relay] Khi cấu hình 'ip helper-address 10.1.1.2' trên cổng G0/0 của Router, cổng G0/0 đóng vai trò gì?",
+    "options": [
+      "A. DHCP Server",
+      "B. DHCP Client",
+      "C. Cổng nhận Broadcast từ Client để chuyển tiếp",
+      "D. Cổng kết nối ra Internet"
+    ],
+    "answer": "C. Cổng nhận Broadcast từ Client để chuyển tiếp"
+  },
+  {
+    "id": 605,
+    "question": "[Lab 6 - DHCP] Bạn muốn đặt tên miền (Domain Name) là 'cisco.com' cho DHCP Pool. Lệnh nào đúng?",
+    "options": [
+      "A. ip domain-name cisco.com",
+      "B. domain-name cisco.com",
+      "C. default-domain cisco.com",
+      "D. name cisco.com"
+    ],
+    "answer": "B. domain-name cisco.com"
+  },
+  {
+    "id": 606,
+    "question": "[Lab 8 - VLAN] Để kiểm tra danh sách các VLAN đã tạo và các cổng được gán vào VLAN, bạn dùng lệnh gì?",
+    "options": [
+      "A. show ip interface brief",
+      "B. show vlan brief",
+      "C. show interfaces trunk",
+      "D. show run vlan"
+    ],
+    "answer": "B. show vlan brief"
+  },
+  {
+    "id": 607,
+    "question": "[Lab 8 - Trunking] Khi kết nối 2 Switch với nhau, nếu một bên cấu hình 'switchport mode trunk', bên còn lại để mặc định (dynamic auto), đường trunk có được thiết lập không?",
+    "options": [
+      "A. Có, vì Trunk sẽ chủ động đàm phán.",
+      "B. Không, vì Auto không chủ động đàm phán.",
+      "C. Có, nhưng chỉ hoạt động ở VLAN 1.",
+      "D. Không, cả hai bên phải cùng là Trunk."
+    ],
+    "answer": "A. Có, vì Trunk sẽ chủ động đàm phán."
+  },
+  {
+    "id": 608,
+    "question": "[Lab 8 - Trunking] Lệnh nào cho phép CHỈ VLAN 10 và 20 đi qua đường Trunk?",
+    "options": [
+      "A. switchport trunk allowed vlan 10,20",
+      "B. switchport trunk native vlan 10,20",
+      "C. switchport access vlan 10,20",
+      "D. vlan allow 10,20"
+    ],
+    "answer": "A. switchport trunk allowed vlan 10,20"
+  },
+  {
+    "id": 609,
+    "question": "[Lab 9 - InterVLAN] Trong mô hình Router-on-a-stick, nếu bạn quên gõ lệnh 'encapsulation dot1q 10' trên sub-interface, điều gì sẽ xảy ra?",
+    "options": [
+      "A. Sub-interface không thể gán địa chỉ IP.",
+      "B. Router vẫn hoạt động nhưng chậm hơn.",
+      "C. Switch sẽ báo lỗi Native VLAN mismatch.",
+      "D. Router sẽ tự động dùng giao thức ISL."
+    ],
+    "answer": "A. Sub-interface không thể gán địa chỉ IP."
+  },
+  {
+    "id": 610,
+    "question": "[Lab 9 - InterVLAN] Để bật tính năng định tuyến trên Switch Layer 3 (Multilayer Switch), lệnh bắt buộc là gì?",
+    "options": [
+      "A. router ospf 1",
+      "B. ip routing",
+      "C. interface vlan 10",
+      "D. switchport routing"
+    ],
+    "answer": "B. ip routing"
+  },
+  {
+    "id": 611,
+    "question": "[Lab 9 - VTP] Trong VTP, Switch ở chế độ nào KHÔNG thể tạo hoặc xóa VLAN?",
+    "options": [
+      "A. Server",
+      "B. Client",
+      "C. Transparent",
+      "D. Master"
+    ],
+    "answer": "B. Client"
+  },
+  {
+    "id": 612,
+    "question": "[Lab 9 - VTP] Để VTP hoạt động đồng bộ giữa các Switch, yếu tố nào sau đây KHÔNG bắt buộc phải giống nhau?",
+    "options": [
+      "A. VTP Domain Name",
+      "B. VTP Password",
+      "C. VTP Version",
+      "D. VTP Revision Number"
+    ],
+    "answer": "D. VTP Revision Number"
+  },
+  {
+    "id": 613,
+    "question": "[Lab 11 - STP] Lệnh nào dùng để xem thông tin về Root Bridge và trạng thái các cổng trong STP?",
+    "options": [
+      "A. show spanning-tree",
+      "B. show ip stp",
+      "C. show bridge",
+      "D. show interfaces switchport"
+    ],
+    "answer": "A. show spanning-tree"
+  },
+  {
+    "id": 614,
+    "question": "[Lab 11 - STP] PortFast nên được cấu hình trên loại cổng nào?",
+    "options": [
+      "A. Cổng nối giữa Switch và Switch.",
+      "B. Cổng nối giữa Switch và Router.",
+      "C. Cổng nối với thiết bị đầu cuối (PC, Printer).",
+      "D. Cổng Trunk."
+    ],
+    "answer": "C. Cổng nối với thiết bị đầu cuối (PC, Printer)."
+  },
+  {
+    "id": 615,
+    "question": "[Lab 11 - STP] Trong Spanning Tree, Switch nào sẽ được bầu làm Root Bridge?",
+    "options": [
+      "A. Switch có địa chỉ MAC cao nhất.",
+      "B. Switch có Priority thấp nhất (nếu bằng Priority thì xét MAC thấp nhất).",
+      "C. Switch có Priority cao nhất.",
+      "D. Switch có nhiều cổng nhất."
+    ],
+    "answer": "B. Switch có Priority thấp nhất (nếu bằng Priority thì xét MAC thấp nhất)."
+  },
+  {
+    "id": 616,
+    "question": "[Lab 12 - EtherChannel] Bạn muốn cấu hình EtherChannel sử dụng giao thức LACP ở chế độ chủ động đàm phán. Mode nào là đúng?",
+    "options": [
+      "A. desirable",
+      "B. auto",
+      "C. active",
+      "D. passive"
+    ],
+    "answer": "C. active"
+  },
+  {
+    "id": 617,
+    "question": "[Lab 12 - EtherChannel] Để kiểm tra trạng thái của EtherChannel (ví dụ xem Port-channel có Up không, giao thức là gì), lệnh nào là tốt nhất?",
+    "options": [
+      "A. show etherchannel summary",
+      "B. show ip interface brief",
+      "C. show interfaces trunk",
+      "D. show lacp neighbors"
+    ],
+    "answer": "A. show etherchannel summary"
+  },
+  {
+    "id": 618,
+    "question": "[Lab 12 - EtherChannel] Điều kiện nào sau đây KHÔNG bắt buộc phải giống nhau giữa các cổng tham gia EtherChannel?",
+    "options": [
+      "A. Tốc độ (Speed)",
+      "B. Chế độ song công (Duplex)",
+      "C. VLAN (Native và Allowed)",
+      "D. Mô tả cổng (Description)"
+    ],
+    "answer": "D. Mô tả cổng (Description)"
+  },
+  {
+    "id": 619,
+    "question": "[Lab 13 - RIP] Lệnh 'no auto-summary' trong cấu hình RIPv2 có tác dụng gì?",
+    "options": [
+      "A. Tắt RIP.",
+      "B. Ngăn chặn việc RIP tự động gộp các mạng con thành mạng lớp (Classful) khi quảng bá.",
+      "C. Tự động tóm tắt mạng để giảm bảng định tuyến.",
+      "D. Chuyển sang dùng RIPv1."
+    ],
+    "answer": "B. Ngăn chặn việc RIP tự động gộp các mạng con thành mạng lớp (Classful) khi quảng bá."
+  },
+  {
+    "id": 620,
+    "question": "[Lab 13 - RIP] Phiên bản nào của RIP hỗ trợ VLSM (Variable Length Subnet Mask)?",
+    "options": [
+      "A. RIPv1",
+      "B. RIPv2",
+      "C. Cả RIPv1 và RIPv2",
+      "D. Không phiên bản nào hỗ trợ."
+    ],
+    "answer": "B. RIPv2"
+  },
+  {
+    "id": 621,
+    "question": "[Lab 14 - OSPF] Để bật OSPF với Process ID là 1, lệnh nào đúng?",
+    "options": [
+      "A. router ospf 1",
+      "B. ip ospf 1",
+      "C. router ospf area 1",
+      "D. ospf process 1"
+    ],
+    "answer": "A. router ospf 1"
+  },
+  {
+    "id": 622,
+    "question": "[Lab 14 - OSPF] Bạn muốn quảng bá mạng 10.0.0.0/8 vào OSPF Area 0. Câu lệnh network nào đúng?",
+    "options": [
+      "A. network 10.0.0.0 255.0.0.0 area 0",
+      "B. network 10.0.0.0 0.255.255.255 area 0",
+      "C. network 10.0.0.0 0.0.0.255 area 0",
+      "D. network 10.0.0.0 area 0"
+    ],
+    "answer": "B. network 10.0.0.0 0.255.255.255 area 0"
+  },
+  {
+    "id": 623,
+    "question": "[Lab 14 - OSPF] Router ID trong OSPF được chọn như thế nào nếu không cấu hình thủ công?",
+    "options": [
+      "A. IP cao nhất của cổng Loopback; nếu không có Loopback thì lấy IP cao nhất của cổng vật lý đang Up.",
+      "B. IP thấp nhất của cổng vật lý.",
+      "C. Địa chỉ MAC của cổng G0/0.",
+      "D. Ngẫu nhiên."
+    ],
+    "answer": "A. IP cao nhất của cổng Loopback; nếu không có Loopback thì lấy IP cao nhất của cổng vật lý đang Up."
+  },
+  {
+    "id": 624,
+    "question": "[Lab 14 - OSPF] Để reset tiến trình OSPF (ví dụ để bầu lại Router ID), lệnh nào được sử dụng?",
+    "options": [
+      "A. clear ip ospf process",
+      "B. reload",
+      "C. no router ospf 1",
+      "D. restart ospf"
+    ],
+    "answer": "A. clear ip ospf process"
+  },
+  {
+    "id": 625,
+    "question": "[Lab 16 - ACL] Standard ACL chỉ kiểm tra thông tin nào trong gói tin?",
+    "options": [
+      "A. Địa chỉ IP đích.",
+      "B. Địa chỉ IP nguồn.",
+      "C. Cổng nguồn và đích.",
+      "D. Giao thức (TCP/UDP)."
+    ],
+    "answer": "B. Địa chỉ IP nguồn."
+  },
+  {
+    "id": 626,
+    "question": "[Lab 16 - ACL] Extended ACL có dải số hiệu từ bao nhiêu?",
+    "options": [
+      "A. 1 - 99",
+      "B. 100 - 199",
+      "C. 1000 - 1999",
+      "D. 200 - 299"
+    ],
+    "answer": "B. 100 - 199"
+  },
+  {
+    "id": 627,
+    "question": "[Lab 16 - ACL] Wildcard mask nào đại diện cho một host cụ thể (ví dụ: chỉ 192.168.1.5)?",
+    "options": [
+      "A. 0.0.0.255",
+      "B. 255.255.255.255",
+      "C. 0.0.0.0",
+      "D. 255.255.255.0"
+    ],
+    "answer": "C. 0.0.0.0"
+  },
+  {
+    "id": 628,
+    "question": "[Lab 16 - ACL] Lệnh 'access-list 10 permit 192.168.1.0 0.0.0.255' cho phép điều gì?",
+    "options": [
+      "A. Cho phép host 192.168.1.0 truy cập.",
+      "B. Cho phép toàn bộ mạng 192.168.1.0/24 truy cập.",
+      "C. Cho phép host 192.168.1.255 truy cập.",
+      "D. Cấu hình sai wildcard mask."
+    ],
+    "answer": "B. Cho phép toàn bộ mạng 192.168.1.0/24 truy cập."
+  },
+  {
+    "id": 629,
+    "question": "[Lab 16 - ACL] Vị trí khuyến nghị để đặt Standard ACL là ở đâu?",
+    "options": [
+      "A. Càng gần nguồn (Source) càng tốt.",
+      "B. Càng gần đích (Destination) càng tốt.",
+      "C. Trên cổng kết nối Internet.",
+      "D. Trên Router biên."
+    ],
+    "answer": "B. Càng gần đích (Destination) càng tốt."
+  },
+  {
+    "id": 630,
+    "question": "[Lab 16 - ACL] Để xem các ACL đã cấu hình và số lượng gói tin khớp (match) với từng dòng, dùng lệnh gì?",
+    "options": [
+      "A. show ip interface",
+      "B. show access-lists",
+      "C. show running-config",
+      "D. show ip route"
+    ],
+    "answer": "B. show access-lists"
+  },
+  {
+    "id": 631,
+    "question": "[Lab 17 - NAT] Để cấu hình NAT Overload (PAT), từ khóa nào là bắt buộc ở cuối lệnh 'ip nat inside source...'?",
+    "options": [
+      "A. pat",
+      "B. overload",
+      "C. port-translation",
+      "D. dynamic"
+    ],
+    "answer": "B. overload"
+  },
+  {
+    "id": 632,
+    "question": "[Lab 17 - NAT] Trong lệnh cấu hình Static NAT: 'ip nat inside source static 192.168.1.10 203.0.113.5', địa chỉ 203.0.113.5 là gì?",
+    "options": [
+      "A. Inside Local IP",
+      "B. Inside Global IP",
+      "C. Outside Local IP",
+      "D. Outside Global IP"
+    ],
+    "answer": "B. Inside Global IP"
+  },
+  {
+    "id": 633,
+    "question": "[Lab 17 - NAT] Lệnh 'ip nat pool MY_POOL 203.0.113.1 203.0.113.10 netmask 255.255.255.0' dùng để làm gì?",
+    "options": [
+      "A. Tạo một dải địa chỉ IP Public để cấp phát động cho NAT.",
+      "B. Tạo dải địa chỉ Private.",
+      "C. Cấu hình DHCP Server.",
+      "D. Tạo danh sách ACL cho NAT."
+    ],
+    "answer": "A. Tạo một dải địa chỉ IP Public để cấp phát động cho NAT."
+  },
+  {
+    "id": 634,
+    "question": "[Lab 17 - NAT] Để xóa bảng NAT đang hoạt động (ví dụ để test lại), dùng lệnh gì?",
+    "options": [
+      "A. clear ip nat translation *",
+      "B. no ip nat inside",
+      "C. delete nat table",
+      "D. clear ip route"
+    ],
+    "answer": "A. clear ip nat translation *"
+  },
+  {
+    "id": 635,
+    "question": "[Tổng hợp] Lệnh 'show ip route' hiển thị mã 'S' ở đầu dòng. 'S' nghĩa là gì?",
+    "options": [
+      "A. Static Route",
+      "B. Standard Route",
+      "C. Subnetted",
+      "D. Summary"
+    ],
+    "answer": "A. Static Route"
+  },
+  {
+    "id": 636,
+    "question": "[Tổng hợp] Để mã hóa tất cả các mật khẩu dạng plain-text trong file cấu hình (như password console, vty), dùng lệnh gì?",
+    "options": [
+      "A. enable secret",
+      "B. service password-encryption",
+      "C. security passwords min-length",
+      "D. crypto key generate rsa"
+    ],
+    "answer": "B. service password-encryption"
+  },
+  {
+    "id": 637,
+    "question": "[Tổng hợp] Khi cấu hình Telnet/SSH, lệnh 'login local' trên 'line vty 0 4' có ý nghĩa gì?",
+    "options": [
+      "A. Sử dụng mật khẩu được cấu hình ngay trên line vty.",
+      "B. Yêu cầu xác thực dựa trên Username/Password được tạo ở Global Config.",
+      "C. Không cần mật khẩu đăng nhập.",
+      "D. Chỉ cho phép đăng nhập từ mạng nội bộ."
+    ],
+    "answer": "B. Yêu cầu xác thực dựa trên Username/Password được tạo ở Global Config."
+  },
+  {
+    "id": 638,
+    "question": "[Troubleshooting] Bạn ping từ PC A sang PC B không được. Bạn kiểm tra thấy cả 2 PC đều thông Default Gateway. Vấn đề có thể nằm ở đâu?",
+    "options": [
+      "A. Cáp mạng PC A bị hỏng.",
+      "B. Router không có tuyến đường (route) đến mạng đích hoặc ACL đang chặn.",
+      "C. PC A chưa cài driver mạng.",
+      "D. Switch bị tắt nguồn."
+    ],
+    "answer": "B. Router không có tuyến đường (route) đến mạng đích hoặc ACL đang chặn."
+  },
+  {
+    "id": 639,
+    "question": "[Troubleshooting] Lệnh 'show interfaces serial 0/0/0' hiển thị 'Line protocol is down'. Nguyên nhân phổ biến nhất là gì?",
+    "options": [
+      "A. Cổng đang bị shutdown.",
+      "B. Chưa cấu hình Clock Rate ở đầu DCE hoặc sai kiểu đóng gói (Encapsulation).",
+      "C. Chưa đặt IP Address.",
+      "D. ACL chặn cổng này."
+    ],
+    "answer": "B. Chưa cấu hình Clock Rate ở đầu DCE hoặc sai kiểu đóng gói (Encapsulation)."
+  },
+  {
+    "id": 640,
+    "question": "[Lab 9 - VTP] Lệnh 'vtp pruning' có tác dụng gì?",
+    "options": [
+      "A. Xóa toàn bộ VLAN không dùng.",
+      "B. Ngăn chặn lưu lượng Broadcast của các VLAN không cần thiết đi qua đường Trunk.",
+      "C. Tắt VTP.",
+      "D. Tăng tốc độ đường Trunk."
+    ],
+    "answer": "B. Ngăn chặn lưu lượng Broadcast của các VLAN không cần thiết đi qua đường Trunk."
+  }
+]
