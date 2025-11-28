@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Dashboard - QuizApp</title>
+    <title>BDU - 8386 Team</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -155,9 +155,12 @@
     </main>
 
     <script>
-        // Display username
+        // Display username/fullname
         const username = localStorage.getItem('username');
-        if (username) {
+        const fullname = localStorage.getItem('fullname');
+        if (fullname && fullname !== 'undefined' && fullname !== 'null') {
+            document.getElementById('user-name-display').textContent = fullname;
+        } else if (username) {
             document.getElementById('user-name-display').textContent = username;
         }
     </script>
