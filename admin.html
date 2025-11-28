@@ -212,7 +212,7 @@
         async function fetchStats() {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:3000/api/admin/stats', {
+                const response = await fetch('/api/admin/stats', {
                     headers: {
                         'Authorization': token
                     }
@@ -309,7 +309,7 @@
             btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-lg">refresh</span> Creating...';
 
             try {
-                const response = await fetch('http://localhost:3000/api/auth/register', {
+                const response = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

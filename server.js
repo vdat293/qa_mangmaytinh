@@ -7,12 +7,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const SECRET_KEY = 'your_secret_key_here'; // In production, use environment variable
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '.'))); // Serve static files from current directory
+
+// Explicitly serve index.html for the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
