@@ -1,54 +1,37 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const User = require('./models/User');
 
-const dbPath = path.resolve(__dirname, 'database.db');
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/quizapp');
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
 
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('Error opening database ' + dbPath + ': ' + err.message);
-    } else {
-        console.log('Connected to the SQLite database.');
-        initDb();
+        // Initialize default admin
+        await initAdmin();
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
     }
-});
+};
 
-function initDb() {
-    db.serialize(() => {
-        // Users table
-        db.run(`CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            password TEXT,
-            role TEXT DEFAULT 'user',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )`);
+const initAdmin = async () => {
+    try {
+        const adminExists = await User.findOne({ username: 'admin' });
+        if (!adminExists) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash('admin123', salt);
 
-        // Exam attempts table
-        db.run(`CREATE TABLE IF NOT EXISTS exam_attempts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            exam_id TEXT,
-            score REAL,
-            completed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(user_id) REFERENCES users(id)
-        )`);
+            await User.create({
+                username: 'admin',
+                password: hashedPassword,
+                role: 'admin'
+            });
+            console.log('Default admin account created.');
+        }
+    } catch (error) {
+        console.error('Error creating admin:', error);
+    }
+};
 
-        // Create default admin if not exists
-        const adminUser = 'admin';
-        const adminPass = 'admin123'; // Default password, should be changed
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(adminPass, salt);
-
-        db.get("SELECT * FROM users WHERE username = ?", [adminUser], (err, row) => {
-            if (!row) {
-                db.run("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", [adminUser, hash, 'admin'], (err) => {
-                    if (err) console.error(err.message);
-                    else console.log('Default admin account created.');
-                });
-            }
-        });
-    });
-}
-
-module.exports = db;
+module.exports = connectDB;

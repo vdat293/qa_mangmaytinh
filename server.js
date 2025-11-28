@@ -2,13 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const db = require('./database');
+const connectDB = require('./database');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('./models/User');
+const ExamAttempt = require('./models/ExamAttempt');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SECRET_KEY = 'your_secret_key_here'; // In production, use environment variable
+const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key_here';
+
+// Connect to Database
+connectDB();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -42,76 +47,117 @@ const verifyAdmin = (req, res, next) => {
 // --- AUTH ROUTES ---
 
 // Register
-app.post('/api/auth/register', (req, res) => {
+app.post('/api/auth/register', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ message: 'Username and password required.' });
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
-
-    db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash], function (err) {
-        if (err) {
-            if (err.message.includes('UNIQUE constraint failed')) {
-                return res.status(400).json({ message: 'Username already exists.' });
-            }
-            return res.status(500).json({ message: err.message });
+    try {
+        const userExists = await User.findOne({ username });
+        if (userExists) {
+            return res.status(400).json({ message: 'Username already exists.' });
         }
-        res.status(201).json({ message: 'User registered successfully.', userId: this.lastID });
-    });
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const user = await User.create({
+            username,
+            password: hashedPassword
+        });
+
+        res.status(201).json({ message: 'User registered successfully.', userId: user._id });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
 // Login
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
 
-    db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
-        if (err) return res.status(500).json({ message: err.message });
+    try {
+        const user = await User.findOne({ username });
         if (!user) return res.status(404).json({ message: 'User not found.' });
 
-        const passwordIsValid = bcrypt.compareSync(password, user.password);
+        const passwordIsValid = await bcrypt.compare(password, user.password);
         if (!passwordIsValid) return res.status(401).json({ message: 'Invalid password.' });
 
-        const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: 86400 }); // 24 hours
+        const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY, { expiresIn: 86400 }); // 24 hours
         res.status(200).json({ auth: true, token: token, role: user.role, username: user.username });
-    });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
 // --- EXAM ROUTES ---
 
 // Submit Exam Result
-app.post('/api/exam/submit', verifyToken, (req, res) => {
+app.post('/api/exam/submit', verifyToken, async (req, res) => {
     const { exam_id, score } = req.body;
 
-    db.run("INSERT INTO exam_attempts (user_id, exam_id, score) VALUES (?, ?, ?)", [req.userId, exam_id, score], function (err) {
-        if (err) return res.status(500).json({ message: err.message });
+    try {
+        await ExamAttempt.create({
+            userId: req.userId,
+            examId: exam_id,
+            score: score
+        });
         res.status(200).json({ message: 'Result saved.' });
-    });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
 // --- ADMIN ROUTES ---
 
 // Get Stats
-// Get Stats
-app.get('/api/admin/stats', verifyToken, verifyAdmin, (req, res) => {
-    const sql = `
-        SELECT 
-            u.username, 
-            ea.exam_id, 
-            COUNT(ea.id) as attempt_count,
-            AVG(ea.score) as average_score,
-            MAX(ea.score) as highest_score,
-            MAX(ea.completed_at) as last_attempt
-        FROM users u 
-        JOIN exam_attempts ea ON u.id = ea.user_id 
-        WHERE u.role != 'admin'
-        GROUP BY u.username, ea.exam_id
-        ORDER BY last_attempt DESC
-    `;
+app.get('/api/admin/stats', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+        const stats = await ExamAttempt.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                $unwind: '$user'
+            },
+            {
+                $match: {
+                    'user.role': { $ne: 'admin' }
+                }
+            },
+            {
+                $group: {
+                    _id: { username: '$user.username', examId: '$examId' },
+                    attempt_count: { $sum: 1 },
+                    average_score: { $avg: '$score' },
+                    highest_score: { $max: '$score' },
+                    last_attempt: { $max: '$completedAt' }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    username: '$_id.username',
+                    exam_id: '$_id.examId',
+                    attempt_count: 1,
+                    average_score: 1,
+                    highest_score: 1,
+                    last_attempt: 1
+                }
+            },
+            {
+                $sort: { last_attempt: -1 }
+            }
+        ]);
 
-    db.all(sql, [], (err, rows) => {
-        if (err) return res.status(500).json({ message: err.message });
-        res.status(200).json(rows);
-    });
+        res.status(200).json(stats);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
 app.listen(PORT, () => {
