@@ -9,7 +9,7 @@ const User = require('./models/User');
 const ExamAttempt = require('./models/ExamAttempt');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key_here';
 
 // Connect to Database
