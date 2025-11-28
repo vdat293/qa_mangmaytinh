@@ -48,7 +48,7 @@ const verifyAdmin = (req, res, next) => {
 
 // Register
 app.post('/api/auth/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, fullname } = req.body;
     if (!username || !password) return res.status(400).json({ message: 'Username and password required.' });
 
     try {
@@ -62,7 +62,8 @@ app.post('/api/auth/register', async (req, res) => {
 
         const user = await User.create({
             username,
-            password: hashedPassword
+            password: hashedPassword,
+            fullname
         });
 
         res.status(201).json({ message: 'User registered successfully.', userId: user._id });
@@ -93,13 +94,14 @@ app.post('/api/auth/login', async (req, res) => {
 
 // Submit Exam Result
 app.post('/api/exam/submit', verifyToken, async (req, res) => {
-    const { exam_id, score } = req.body;
+    const { exam_id, score, details } = req.body;
 
     try {
         await ExamAttempt.create({
             userId: req.userId,
             examId: exam_id,
-            score: score
+            score: score,
+            details: details
         });
         res.status(200).json({ message: 'Result saved.' });
     } catch (error) {
@@ -131,7 +133,7 @@ app.get('/api/admin/stats', verifyToken, verifyAdmin, async (req, res) => {
             },
             {
                 $group: {
-                    _id: { username: '$user.username', examId: '$examId' },
+                    _id: { username: '$user.username', fullname: '$user.fullname', examId: '$examId' },
                     attempt_count: { $sum: 1 },
                     average_score: { $avg: '$score' },
                     highest_score: { $max: '$score' },
@@ -142,6 +144,7 @@ app.get('/api/admin/stats', verifyToken, verifyAdmin, async (req, res) => {
                 $project: {
                     _id: 0,
                     username: '$_id.username',
+                    fullname: '$_id.fullname',
                     exam_id: '$_id.examId',
                     attempt_count: 1,
                     average_score: 1,
@@ -152,6 +155,40 @@ app.get('/api/admin/stats', verifyToken, verifyAdmin, async (req, res) => {
             {
                 $sort: { last_attempt: -1 }
             }
+        ]);
+
+        res.status(200).json(stats);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Get Question Stats
+app.get('/api/admin/question-stats', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+        const stats = await ExamAttempt.aggregate([
+            { $unwind: '$details' },
+            {
+                $group: {
+                    _id: '$details.questionId',
+                    total_attempts: { $sum: 1 },
+                    correct_count: {
+                        $sum: { $cond: [{ $eq: ['$details.isCorrect', true] }, 1, 0] }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    question_id: '$_id',
+                    total_attempts: 1,
+                    correct_count: 1,
+                    correct_percentage: {
+                        $multiply: [{ $divide: ['$correct_count', '$total_attempts'] }, 100]
+                    }
+                }
+            },
+            { $sort: { question_id: 1 } }
         ]);
 
         res.status(200).json(stats);

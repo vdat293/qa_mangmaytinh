@@ -395,10 +395,16 @@
             document.getElementById('result-screen').classList.remove('hidden');
 
             let correctCount = 0;
+            const details = [];
             currentExamQuestions.forEach(q => {
-                if (userAnswers[q.id] === q.answer) {
+                const isCorrect = userAnswers[q.id] === q.answer;
+                if (isCorrect) {
                     correctCount++;
                 }
+                details.push({
+                    questionId: q.id,
+                    isCorrect: isCorrect
+                });
             });
 
             document.getElementById('score-text').textContent = `${correctCount}/20`;
@@ -421,7 +427,8 @@
                         },
                         body: JSON.stringify({
                             exam_id: currentExamId,
-                            score: (correctCount / 20) * 10
+                            score: (correctCount / 20) * 10,
+                            details: details
                         })
                     });
                 }

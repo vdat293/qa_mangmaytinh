@@ -14,6 +14,10 @@ const examAttemptSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    details: [{
+        questionId: String,
+        isCorrect: Boolean
+    }],
     completedAt: {
         type: Date,
         default: Date.now
