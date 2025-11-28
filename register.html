@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sign Up - QuizApp</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A90E2",
+                        "background-light": "#F4F4F4",
+                        "background-dark": "#101922",
+                        "text-light": "#333333",
+                        "text-dark": "#E0E0E0",
+                    },
+                    fontFamily: { "display": ["Lexend", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="font-display bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center min-h-screen p-4">
+    <div
+        class="w-full max-w-md bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-700 transform transition-all hover:scale-[1.01]">
+        <div class="p-8 sm:p-10 text-center">
+            <div
+                class="inline-flex items-center justify-center size-20 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 mb-6 shadow-lg shadow-red-500/20 animate-pulse">
+                <span class="material-symbols-outlined text-5xl">lock</span>
+            </div>
+
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">Registration Locked</h1>
+            <p class="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                Public registration is currently disabled to ensure system security. Please contact the administrator to
+                request an account.
+            </p>
+
+            <div
+                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 mb-8 border border-slate-100 dark:border-slate-700">
+                <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+                    Contact Information</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-200 group">
+                        <div
+                            class="p-2 rounded-lg bg-white dark:bg-slate-700 shadow-sm group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-blue-500">mail</span>
+                        </div>
+                        <span class="font-medium">admin@school.edu.vn</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-200 group">
+                        <div
+                            class="p-2 rounded-lg bg-white dark:bg-slate-700 shadow-sm group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-green-500">call</span>
+                        </div>
+                        <span class="font-medium">0123 456 789</span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="index.html"
+                class="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Back to Login
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

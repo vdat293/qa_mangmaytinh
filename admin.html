@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Dashboard - QuizApp</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A90E2",
+                        "background-light": "#F4F4F4",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script>
+        // Check for token and admin role
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token || role !== 'admin') {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+
+<body class="font-display bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col md:flex-row">
+    <!-- Sidebar -->
+    <aside
+        class="w-full md:w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex-shrink-0 sticky top-0 md:h-screen z-20">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center gap-3">
+            <div
+                class="size-8 rounded-lg bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+            </div>
+            <span
+                class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Admin</span>
+        </div>
+
+        <nav class="p-4 space-y-2">
+            <button onclick="switchTab('stats')" id="nav-stats"
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all duration-200 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+                <span class="material-symbols-outlined">analytics</span>
+                Statistics
+            </button>
+            <button onclick="switchTab('create-user')" id="nav-create-user"
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all duration-200">
+                <span class="material-symbols-outlined">person_add</span>
+                Create Account
+            </button>
+        </nav>
+
+        <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-700">
+            <button onclick="logout()"
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all duration-200">
+                <span class="material-symbols-outlined">logout</span>
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-6 md:p-8 overflow-y-auto h-screen">
+        <div class="max-w-5xl mx-auto">
+
+            <!-- Statistics Section -->
+            <section id="stats-section" class="animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Exam Statistics</h1>
+                    <p class="text-slate-500 dark:text-slate-400">Overview of student performance and quiz attempts.</p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50/50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700">
+                                    <th
+                                        class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
+                                        User</th>
+                                    <th
+                                        class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
+                                        Exam ID</th>
+                                    <th
+                                        class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-center">
+                                        Attempts</th>
+                                    <th
+                                        class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-center">
+                                        Avg Score</th>
+                                    <th
+                                        class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-center">
+                                        Highest</th>
+                                    <th
+                                        class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-right">
+                                        Last Attempt</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stats-body" class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <tr>
+                                    <td colspan="6" class="p-12 text-center">
+                                        <div class="flex flex-col items-center gap-3 text-slate-400">
+                                            <span class="material-symbols-outlined text-4xl animate-spin">refresh</span>
+                                            <span class="font-medium">Loading statistics...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Create User Section -->
+            <section id="create-user-section" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Create Account</h1>
+                    <p class="text-slate-500 dark:text-slate-400">Add a new student account to the system.</p>
+                </div>
+
+                <div class="max-w-xl">
+                    <div
+                        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-8">
+                        <form id="create-user-form" class="space-y-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-sm font-bold text-slate-700 dark:text-slate-300">Username</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-slate-400">person</span>
+                                    </div>
+                                    <input type="text" id="new-username" required
+                                        class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-slate-900 dark:text-white placeholder-slate-400 font-medium"
+                                        placeholder="Enter username">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-sm font-bold text-slate-700 dark:text-slate-300">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-slate-400">lock</span>
+                                    </div>
+                                    <input type="password" id="new-password" required
+                                        class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-slate-900 dark:text-white placeholder-slate-400 font-medium"
+                                        placeholder="Enter password">
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">add_circle</span> Create Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all sections
+            document.getElementById('stats-section').classList.add('hidden');
+            document.getElementById('create-user-section').classList.add('hidden');
+
+            // Reset nav styles
+            const navStats = document.getElementById('nav-stats');
+            const navCreate = document.getElementById('nav-create-user');
+
+            const activeClass = "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400";
+            const inactiveClass = "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50";
+
+            navStats.className = `w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all duration-200 ${tabId === 'stats' ? activeClass : inactiveClass}`;
+            navCreate.className = `w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all duration-200 ${tabId === 'create-user' ? activeClass : inactiveClass}`;
+
+            // Show selected section
+            document.getElementById(`${tabId}-section`).classList.remove('hidden');
+        }
+
+        async function fetchStats() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3000/api/admin/stats', {
+                    headers: {
+                        'Authorization': token
+                    }
+                });
+
+                if (response.ok) {
+                    const stats = await response.json();
+                    renderStats(stats);
+                } else {
+                    console.error('Failed to fetch stats');
+                    if (response.status === 401 || response.status === 403) {
+                        logout();
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                document.getElementById('stats-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-12 text-center">
+                            <div class="flex flex-col items-center gap-3 text-red-500">
+                                <span class="material-symbols-outlined text-4xl">error</span>
+                                <span class="font-medium">Error loading data. Is the server running?</span>
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        function renderStats(stats) {
+            const tbody = document.getElementById('stats-body');
+            if (stats.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-12 text-center">
+                            <div class="flex flex-col items-center gap-3 text-slate-400">
+                                <span class="material-symbols-outlined text-4xl">inbox</span>
+                                <span class="font-medium">No exam attempts recorded yet.</span>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = stats.map(row => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group">
+                    <td class="p-5 font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <div class="flex items-center gap-3">
+
+                            ${row.username}
+                        </div>
+                    </td>
+                    <td class="p-5 text-slate-500 dark:text-slate-400 font-mono text-sm">
+                        <span class="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600">
+                            ${row.exam_id}
+                        </span>
+                    </td>
+                    <td class="p-5 text-center text-slate-700 dark:text-slate-300 font-medium">${row.attempt_count}</td>
+                    <td class="p-5 text-center">
+                        <span class="inline-flex items-center justify-center min-w-[3rem] px-2 py-1 rounded-lg font-bold text-sm ${getScoreBadgeColor(row.average_score)}">
+                            ${parseFloat(row.average_score).toFixed(1)}
+                        </span>
+                    </td>
+                    <td class="p-5 text-center">
+                        <span class="inline-flex items-center justify-center min-w-[3rem] px-2 py-1 rounded-lg font-bold text-sm ${getScoreBadgeColor(row.highest_score)}">
+                            ${row.highest_score}
+                        </span>
+                    </td>
+                    <td class="p-5 text-right text-slate-500 dark:text-slate-400 text-sm font-medium">
+                        ${new Date(row.last_attempt).toLocaleString('vi-VN')}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getScoreBadgeColor(score) {
+            if (score >= 8) return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-900/50';
+            if (score >= 5) return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-900/50';
+            return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-900/50';
+        }
+
+        // Load stats on page load
+        fetchStats();
+        switchTab('stats'); // Initialize with the stats tab
+
+        // Handle Create User
+        document.getElementById('create-user-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('new-username').value;
+            const password = document.getElementById('new-password').value;
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-lg">refresh</span> Creating...';
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Show success toast/alert
+                    const form = document.getElementById('create-user-form');
+                    const successMsg = document.createElement('div');
+                    successMsg.className = 'p-3 rounded-xl bg-green-50 text-green-600 text-sm font-medium border border-green-100 flex items-center gap-2 animate-fade-in';
+                    successMsg.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span> Account created successfully!';
+                    form.appendChild(successMsg);
+
+                    form.reset();
+                    setTimeout(() => successMsg.remove(), 3000);
+                } else {
+                    alert(data.message || 'Failed to create account');
+                }
+            } catch (error) {
+                console.error('Error creating user:', error);
+                alert('An error occurred. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+    </script>
+</body>
+
+</html>

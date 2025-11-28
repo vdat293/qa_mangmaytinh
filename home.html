@@ -4,11 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>QuizApp - Choose Your Challenge</title>
+    <title>Dashboard - QuizApp</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
@@ -16,23 +18,11 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3B82F6", // Modern Blue
-                        "primary-dark": "#2563EB",
-                        "secondary": "#10B981", // Emerald Green for success vibes
-                        "background-light": "#F3F4F6",
-                        "background-dark": "#0F172A", // Slate 900
-                        "card-light": "#FFFFFF",
-                        "card-dark": "#1E293B", // Slate 800
-                        "text-main": "#1F2937", // Gray 800
-                        "text-muted": "#6B7280", // Gray 500
-                        "text-light": "#F9FAFB", // Gray 50
+                        "primary": "#4A90E2",
+                        "background-light": "#F4F4F4",
+                        "background-dark": "#101922",
                     },
                     fontFamily: { "display": ["Lexend", "sans-serif"] },
-                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem" },
-                    boxShadow: {
-                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                        'glow': '0 0 15px rgba(59, 130, 246, 0.5)',
-                    }
                 },
             },
         }
@@ -41,246 +31,142 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
-            border-radius: 4px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94A3B8;
-        }
     </style>
 </head>
 
 <body
-    class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-text-light transition-colors duration-300">
-    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    class="font-display bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 min-h-screen flex flex-col">
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        }
+    </script>
 
-        <!-- Navbar -->
-        <header
-            class="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 dark:bg-background-dark/80 border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <!-- Logo -->
-                    <div class="flex items-center gap-2">
-                        <div
-                            class="size-8 text-primary bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                            <span class="material-symbols-outlined text-2xl">school</span>
-                        </div>
-                        <span
-                            class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-                            QuizApp
-                        </span>
+    <!-- Header -->
+    <header
+        class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-white/20 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="size-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                        <span class="material-symbols-outlined text-2xl">school</span>
                     </div>
+                    <span
+                        class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">QuizApp</span>
+                </div>
 
-                    <!-- Desktop Nav -->
-                    <nav class="hidden md:flex items-center gap-8">
-                        <a href="#" class="text-sm font-medium hover:text-primary transition-colors">Dashboard</a>
-                        <a href="#" class="text-sm font-medium hover:text-primary transition-colors">Leaderboard</a>
-                        <a href="#" class="text-sm font-medium hover:text-primary transition-colors">History</a>
-                    </nav>
-
-                    <!-- User Profile / Actions -->
-                    <div class="flex items-center gap-4">
-                        <button
-                            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-text-muted">
-                            <span class="material-symbols-outlined">notifications</span>
-                        </button>
-                        <div
-                            class="size-8 rounded-full bg-gradient-to-tr from-primary to-purple-500 p-[2px] cursor-pointer">
-                            <div
-                                class="size-full rounded-full bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden">
-                                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" alt="User"
-                                    class="size-full object-cover" />
-                            </div>
-                        </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex flex-col items-end">
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200"
+                            id="user-name-display">User</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400">Student</span>
                     </div>
+                    <button onclick="logout()"
+                        class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-red-500 transition-colors"
+                        title="Logout">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <main class="flex-grow">
+    <main class="flex-grow px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
             <!-- Hero Section -->
-            <section class="relative pt-16 pb-12 lg:pt-24 lg:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
-                <div
-                    class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl -z-10 opacity-30 pointer-events-none">
-                    <div
-                        class="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full mix-blend-multiply filter blur-3xl animate-blob">
-                    </div>
-                    <div
-                        class="absolute top-20 right-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000">
-                    </div>
-                    <div
-                        class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000">
-                    </div>
-                </div>
-
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-6">
-                    Master Your <span class="text-primary">Knowledge</span>
+            <div class="text-center mb-16">
+                <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
+                    Ready to <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Challenge</span>
+                    Yourself?
                 </h1>
-                <p class="text-lg sm:text-xl text-text-muted max-w-2xl mx-auto mb-10">
-                    Select a topic below to challenge yourself, track your progress, and become an expert.
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                    Select a topic below to start testing your knowledge and tracking your progress.
                 </p>
-
-                <!-- Search Bar -->
-                <div class="max-w-xl mx-auto relative group">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <span
-                            class="material-symbols-outlined text-text-muted group-focus-within:text-primary transition-colors">search</span>
-                    </div>
-                    <input type="text"
-                        class="block w-full pl-12 pr-4 py-4 bg-white dark:bg-card-dark border-none rounded-2xl shadow-soft focus:ring-2 focus:ring-primary/50 text-lg placeholder-text-muted transition-all"
-                        placeholder="Search for a topic (e.g., Networking)...">
-                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
-                        <button
-                            class="p-2 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                            <span class="material-symbols-outlined text-sm">tune</span>
-                        </button>
-                    </div>
-                </div>
-            </section>
+            </div>
 
             <!-- Topics Grid -->
-            <section class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-20">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold">Popular Topics</h2>
-                    <a href="#" class="text-primary font-medium hover:underline">View All</a>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                    <!-- Card: Mạng máy tính -->
-                    <a href="qa_mangmaytinh.html"
-                        class="group relative bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-gray-800 overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="material-symbols-outlined text-primary">arrow_outward</span>
-                        </div>
-
-                        <div
-                            class="size-14 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-3xl">dns</span>
-                        </div>
-
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Mạng máy tính</h3>
-                        <p class="text-sm text-text-muted mb-4 line-clamp-2">
-                            Explore protocols, architectures, and the fundamentals of computer networking.
-                        </p>
-
-                        <div class="flex items-center gap-4 text-xs font-medium text-text-muted">
-                            <div class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-base">quiz</span>
-                                <span>Multiple Exams</span>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-base">schedule</span>
-                                <span>~45m</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 w-full h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary w-0 group-hover:w-full transition-all duration-700 ease-out">
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- Placeholder Card 1 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Mạng máy tính Card -->
+                <a href="qa_mangmaytinh.html"
+                    class="group relative bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-white/20 dark:border-slate-700 overflow-hidden hover:-translate-y-1 transition-all duration-300">
                     <div
-                        class="group relative bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 opacity-60 cursor-not-allowed">
-                        <div
-                            class="size-14 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
-                            <span class="material-symbols-outlined text-3xl">code</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Web Development</h3>
-                        <p class="text-sm text-text-muted mb-4">Coming soon...</p>
+                        class="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="material-symbols-outlined text-blue-500">arrow_forward</span>
                     </div>
 
-                    <!-- Placeholder Card 2 -->
                     <div
-                        class="group relative bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 opacity-60 cursor-not-allowed">
-                        <div
-                            class="size-14 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center mb-4">
-                            <span class="material-symbols-outlined text-3xl">database</span>
+                        class="size-16 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <span class="material-symbols-outlined text-3xl">dns</span>
+                    </div>
+
+                    <h3
+                        class="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        Mạng máy tính
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">
+                        Kiến thức về mô hình OSI, TCP/IP, định tuyến và các giao thức mạng cơ bản.
+                    </p>
+
+                    <div class="flex items-center gap-4 text-sm font-medium text-slate-400">
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-lg">quiz</span>
+                            <span>Multiple Exams</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Database Systems</h3>
-                        <p class="text-sm text-text-muted mb-4">Coming soon...</p>
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-lg">schedule</span>
+                            <span>~45m</span>
+                        </div>
                     </div>
+                </a>
 
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer
-            class="bg-white dark:bg-card-dark border-t border-gray-200 dark:border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-2">
-                    <div class="size-6 text-primary flex items-center justify-center">
-                        <span class="material-symbols-outlined">school</span>
+                <!-- Coming Soon Card 1 -->
+                <div
+                    class="relative bg-white/50 dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 opacity-60 cursor-not-allowed">
+                    <div
+                        class="size-16 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">code</span>
                     </div>
-                    <span class="font-bold text-lg">QuizApp</span>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Web Development</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6">HTML, CSS, JavaScript and modern frameworks.</p>
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-500">Coming
+                        Soon</span>
                 </div>
 
-                <div class="flex gap-8 text-sm text-text-muted">
-                    <a href="#" class="hover:text-primary transition-colors">About</a>
-                    <a href="#" class="hover:text-primary transition-colors">Features</a>
-                    <a href="#" class="hover:text-primary transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-primary transition-colors">Terms</a>
+                <!-- Coming Soon Card 2 -->
+                <div
+                    class="relative bg-white/50 dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 opacity-60 cursor-not-allowed">
+                    <div
+                        class="size-16 rounded-2xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">database</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Database Systems</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6">SQL, NoSQL, normalization and design patterns.
+                    </p>
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-500">Coming
+                        Soon</span>
                 </div>
-
-                <p class="text-sm text-text-muted">
-                    © 2024 QuizApp. All rights reserved.
-                </p>
             </div>
-        </footer>
+        </div>
+    </main>
 
-    </div>
-
-    <!-- Animation Styles -->
-    <style>
-        @keyframes blob {
-            0% {
-                transform: translate(0px, 0px) scale(1);
-            }
-
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
-            }
-
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
-            }
-
-            100% {
-                transform: translate(0px, 0px) scale(1);
-            }
+    <script>
+        // Display username
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('user-name-display').textContent = username;
         }
-
-        .animate-blob {
-            animation: blob 7s infinite;
-        }
-
-        .animation-delay-2000 {
-            animation-delay: 2s;
-        }
-
-        .animation-delay-4000 {
-            animation-delay: 4s;
-        }
-    </style>
+    </script>
 </body>
 
 </html>
