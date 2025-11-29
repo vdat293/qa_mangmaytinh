@@ -74,7 +74,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center gap-3">
-                    <a href="home.html"
+                    <a href="javascript:void(0)" onclick="handleBackNavigation()"
                         class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-blue-600 transition-colors">
                         <span class="material-symbols-outlined">arrow_back</span>
                     </a>
@@ -134,19 +134,13 @@
                 <div class="flex justify-between items-center mt-4">
                     <button id="prev-btn"
                         class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                        onclick="prevQuestion()">
-                        Previous
-                    </button>
+                        onclick="prevQuestion()">Previous</button>
                     <button id="next-btn"
                         class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-0.5"
-                        onclick="nextQuestion()">
-                        Next
-                    </button>
+                        onclick="nextQuestion()">Next</button>
                     <button id="submit-btn"
                         class="hidden px-8 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all transform hover:-translate-y-0.5"
-                        onclick="submitQuiz()">
-                        Submit Quiz
-                    </button>
+                        onclick="submitQuiz()">Submit Quiz</button>
                 </div>
             </div>
 
@@ -201,172 +195,222 @@
                 </div>
                 <div class="flex justify-center pt-8 border-t border-slate-200 dark:border-slate-700">
                     <button onclick="continueQuiz()"
-                        class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-0.5">
-                        Take Another Quiz
-                    </button>
+                        class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-0.5">Take
+                        Another Quiz</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="qa_data.js"></script>
-    <script>
-        let allQuestions = [];
-        let currentExamQuestions = [];
-        let userAnswers = {};
-        let currentQuestionIndex = 0;
-        let timerInterval;
-        let timeRemaining = 30 * 60;
-        let isPracticeMode = false;
-        let currentExamId = '';
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
+        <div
+            class="bg-white dark:bg-slate-900 rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-slate-200 dark:border-slate-700 transform scale-100 transition-all">
+            <div class="text-center">
+                <div
+                    class="size-12 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-2xl">warning</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Bạn đang làm dở?</h3>
+                <p class="text-slate-600 dark:text-slate-400 mb-6">Bạn có chắc chắn muốn thoát không? Kết quả bài làm
+                    hiện tại sẽ không được lưu.</p>
+                <div class="flex gap-3">
+                    <button onclick="cancelExit()"
+                        class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Tiếp
+                        tục làm</button>
+                    <button onclick="confirmExit()"
+                        class="flex-1 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold shadow-lg shadow-red-500/30 transition-colors">Thoát</button>
+                </div>
+            </div>
+        </div>
 
-        // Initialize with data from qa_data.js
-        if (typeof allQuestionsData !== 'undefined') {
-            allQuestions = allQuestionsData;
-            initSelectionScreen();
-        } else {
-            console.error('Error: qa_data.js not loaded or empty');
-            alert('Không thể tải dữ liệu câu hỏi. Vui lòng kiểm tra file qa_data.js');
-        }
+        <script src="qa_data.js"></script>
+        <script>
+            let allQuestions = [];
+            let currentQuestionIndex = 0;
+            let timerInterval;
+            let timeRemaining = 30 * 60;
+            let isPracticeMode = false;
+            let currentExamId = '';
+            let userAnswers = {};
+            let currentExamQuestions = [];
 
-        function initSelectionScreen() {
-            const grid = document.getElementById('exam-grid');
-            grid.innerHTML = '';
+            // Initialize with data from qa_data.js
+            if (typeof allQuestionsData !== 'undefined') {
+                allQuestions = allQuestionsData;
+                initSelectionScreen();
+            } else {
+                console.error('Error: qa_data.js not loaded or empty');
+                alert('Không thể tải dữ liệu câu hỏi. Vui lòng kiểm tra file qa_data.js');
+            }
 
-            // 10 Fixed Exams
-            for (let i = 1; i <= 10; i++) {
-                const btn = document.createElement('button');
-                btn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group";
-                btn.innerHTML = `
+            function initSelectionScreen() {
+                const grid = document.getElementById('exam-grid');
+                grid.innerHTML = '';
+
+                // 10 Fixed Exams
+                for (let i = 1; i <= 10; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group";
+                    btn.innerHTML = `
                     <div class="size-14 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                         <span class="material-symbols-outlined text-3xl">assignment</span>
                     </div>
                     <span class="text-xl font-bold text-slate-900 dark:text-white mb-1">Đề ${i}</span>
                     <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">20 câu</span>
                 `;
-                btn.onclick = () => startExam(i);
-                grid.appendChild(btn);
-            }
+                    btn.onclick = () => startExam(i);
+                    grid.appendChild(btn);
+                }
 
-            // Random Exam
-            const randomBtn = document.createElement('button');
-            randomBtn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/40 hover:-translate-y-1 transition-all duration-300";
-            randomBtn.innerHTML = `
+                // Random Exam
+                const randomBtn = document.createElement('button');
+                randomBtn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/40 hover:-translate-y-1 transition-all duration-300";
+                randomBtn.innerHTML = `
                 <div class="size-14 rounded-2xl bg-white/20 flex items-center justify-center mb-4 backdrop-blur-sm">
                     <span class="material-symbols-outlined text-3xl">shuffle</span>
                 </div>
                 <span class="text-xl font-bold mb-1">Đề Random</span>
                 <span class="text-sm text-white/80 font-medium">Ngẫu nhiên</span>
             `;
-            randomBtn.onclick = () => startExam('random');
-            grid.appendChild(randomBtn);
+                randomBtn.onclick = () => startExam('random');
+                grid.appendChild(randomBtn);
 
-            // Exercise Exam (Baitap)
-            const baitapBtn = document.createElement('button');
-            baitapBtn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 hover:-translate-y-1 transition-all duration-300";
-            baitapBtn.innerHTML = `
+                // Exercise Exam (Baitap)
+                const baitapBtn = document.createElement('button');
+                baitapBtn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 hover:-translate-y-1 transition-all duration-300";
+                baitapBtn.innerHTML = `
                 <div class="size-14 rounded-2xl bg-white/20 flex items-center justify-center mb-4 backdrop-blur-sm">
                     <span class="material-symbols-outlined text-3xl">school</span>
                 </div>
                 <span class="text-xl font-bold mb-1">Đề bài tập</span>
                 <span class="text-sm text-white/80 font-medium">20 câu ngẫu nhiên</span>
             `;
-            baitapBtn.onclick = () => startExam('baitap');
-            grid.appendChild(baitapBtn);
-        }
+                baitapBtn.onclick = () => startExam('baitap');
+                grid.appendChild(baitapBtn);
 
-        async function startExam(type) {
-            userAnswers = {};
-            currentQuestionIndex = 0;
-            timeRemaining = 30 * 60;
-
-            if (type === 'random') {
-                isPracticeMode = false;
-                currentExamId = 'random';
-                currentExamQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, 20);
-            } else if (type === 'baitap') {
-                isPracticeMode = true;
-                currentExamId = 'baitap';
-                try {
-                    const response = await fetch('qa_baitap.json');
-                    if (!response.ok) throw new Error('Failed to load questions');
-                    const baitapQuestions = await response.json();
-                    currentExamQuestions = [...baitapQuestions].sort(() => 0.5 - Math.random()).slice(0, 20);
-                } catch (error) {
-                    console.error('Error loading baitap questions:', error);
-                    alert('Không thể tải câu hỏi bài tập. Vui lòng thử lại sau.');
-                    return;
-                }
-            } else {
-                isPracticeMode = true;
-                currentExamId = `de${type}`;
-                const start = (type - 1) * 20;
-                currentExamQuestions = allQuestions.slice(start, start + 20);
-                if (currentExamQuestions.length < 20) {
-                    const needed = 20 - currentExamQuestions.length;
-                    currentExamQuestions = currentExamQuestions.concat(allQuestions.slice(0, needed));
-                }
+                // Netacad Exam
+                const netacadBtn = document.createElement('button');
+                netacadBtn.className = "flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-500/30 hover:shadow-teal-500/40 hover:-translate-y-1 transition-all duration-300";
+                netacadBtn.innerHTML = `
+                <div class="size-14 rounded-2xl bg-white/20 flex items-center justify-center mb-4 backdrop-blur-sm">
+                    <span class="material-symbols-outlined text-3xl">dns</span>
+                </div>
+                <span class="text-xl font-bold mb-1">Đề Netacad</span>
+                <span class="text-sm text-white/80 font-medium">20 câu ngẫu nhiên</span>
+            `;
+                netacadBtn.onclick = () => startExam('netacad');
+                grid.appendChild(netacadBtn);
             }
 
-            document.getElementById('selection-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            document.getElementById('timer-container').classList.remove('hidden');
+            async function startExam(type) {
+                userAnswers = {};
+                currentQuestionIndex = 0;
+                timeRemaining = 30 * 60;
 
-            startTimer();
-            renderQuestion();
-        }
-
-        function startTimer() {
-            const display = document.getElementById('timer-display');
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
-                display.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    submitQuiz();
-                }
-            }, 1000);
-        }
-
-        function renderQuestion() {
-            const q = currentExamQuestions[currentQuestionIndex];
-            document.getElementById('current-q-num').textContent = currentQuestionIndex + 1;
-            document.getElementById('progress-text').textContent = `${Math.round(((currentQuestionIndex + 1) / 20) * 100)}%`;
-            document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / 20) * 100}%`;
-            document.getElementById('question-text').textContent = q.question;
-
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-            const userAns = userAnswers[q.id];
-            const hasAnswered = userAns !== undefined;
-
-            q.options.forEach((opt, idx) => {
-                const isSelected = userAns === opt;
-                let styleClass = 'border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-slate-50 dark:hover:bg-slate-800/50';
-                let icon = '';
-                let isDisabled = '';
-
-                if (isPracticeMode && hasAnswered) {
-                    isDisabled = 'disabled';
-                    if (opt === q.answer) {
-                        styleClass = 'correct-answer font-medium shadow-sm';
-                        icon = '<span class="material-symbols-outlined text-green-500 ml-auto">check_circle</span>';
-                    } else if (isSelected && opt !== q.answer) {
-                        styleClass = 'wrong-answer shadow-sm';
-                        icon = '<span class="material-symbols-outlined text-red-500 ml-auto">cancel</span>';
-                    } else {
-                        styleClass = 'border-slate-200 dark:border-slate-700 opacity-50';
+                if (type === 'random') {
+                    isPracticeMode = false;
+                    currentExamId = 'random';
+                    currentExamQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, 20);
+                } else if (type === 'baitap') {
+                    isPracticeMode = true;
+                    currentExamId = 'baitap';
+                    try {
+                        const response = await fetch('qa_baitap.json');
+                        if (!response.ok) throw new Error('Failed to load questions');
+                        const baitapQuestions = await response.json();
+                        currentExamQuestions = [...baitapQuestions].sort(() => 0.5 - Math.random()).slice(0, 20);
+                    } catch (error) {
+                        console.error('Error loading baitap questions:', error);
+                        alert('Không thể tải câu hỏi bài tập. Vui lòng thử lại sau.');
+                        return;
                     }
-                } else if (isSelected) {
-                    styleClass = 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm';
+                } else if (type === 'netacad') {
+                    isPracticeMode = true;
+                    currentExamId = 'netacad';
+                    try {
+                        const response = await fetch('qa_netacad.json');
+                        if (!response.ok) throw new Error('Failed to load questions');
+                        const netacadQuestions = await response.json();
+                        currentExamQuestions = [...netacadQuestions].sort(() => 0.5 - Math.random()).slice(0, 20);
+                    } catch (error) {
+                        console.error('Error loading netacad questions:', error);
+                        alert('Không thể tải câu hỏi Netacad. Vui lòng thử lại sau.');
+                        return;
+                    }
+                } else {
+                    isPracticeMode = true;
+                    currentExamId = `de${type}`;
+                    const start = (type - 1) * 20;
+                    currentExamQuestions = allQuestions.slice(start, start + 20);
+                    if (currentExamQuestions.length < 20) {
+                        const needed = 20 - currentExamQuestions.length;
+                        currentExamQuestions = currentExamQuestions.concat(allQuestions.slice(0, needed));
+                    }
                 }
 
-                const div = document.createElement('div');
-                div.className = 'relative';
-                div.innerHTML = `
+                document.getElementById('selection-screen').classList.add('hidden');
+                document.getElementById('quiz-screen').classList.remove('hidden');
+                document.getElementById('timer-container').classList.remove('hidden');
+
+                startTimer();
+                renderQuestion();
+            }
+
+            function startTimer() {
+                const display = document.getElementById('timer-display');
+                clearInterval(timerInterval);
+
+                timerInterval = setInterval(() => {
+                    timeRemaining--;
+                    const minutes = Math.floor(timeRemaining / 60);
+                    const seconds = timeRemaining % 60;
+                    display.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        submitQuiz();
+                    }
+                }, 1000);
+            }
+
+            function renderQuestion() {
+                const q = currentExamQuestions[currentQuestionIndex];
+                document.getElementById('current-q-num').textContent = currentQuestionIndex + 1;
+                document.getElementById('progress-text').textContent = `${Math.round(((currentQuestionIndex + 1) / 20) * 100)}%`;
+                document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / 20) * 100}%`;
+                document.getElementById('question-text').textContent = q.question;
+
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.innerHTML = '';
+                const userAns = userAnswers[q.id];
+                const hasAnswered = userAns !== undefined;
+
+                q.options.forEach((opt, idx) => {
+                    const isSelected = userAns === opt;
+                    let styleClass = 'border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-slate-50 dark:hover:bg-slate-800/50';
+                    let icon = '';
+                    let isDisabled = '';
+
+                    if (isPracticeMode && hasAnswered) {
+                        isDisabled = 'disabled';
+                        if (opt === q.answer) {
+                            styleClass = 'correct-answer font-medium shadow-sm';
+                            icon = '<span class="material-symbols-outlined text-green-500 ml-auto">check_circle</span>';
+                        } else if (isSelected && opt !== q.answer) {
+                            styleClass = 'wrong-answer shadow-sm';
+                            icon = '<span class="material-symbols-outlined text-red-500 ml-auto">cancel</span>';
+                        } else {
+                            styleClass = 'border-slate-200 dark:border-slate-700 opacity-50';
+                        }
+                    } else if (isSelected) {
+                        styleClass = 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm';
+                    }
+
+                    const div = document.createElement('div');
+                    div.className = 'relative';
+                    div.innerHTML = `
                     <input class="sr-only radio-custom" id="opt-${idx}" name="q-${q.id}" type="radio" ${isSelected ? 'checked' : ''} ${isDisabled} onchange="selectAnswer('${q.id}', '${opt.replace(/'/g, "\\'")}')">
                     <label for="opt-${idx}" class="flex items-center gap-4 rounded-xl border-2 p-4 cursor-pointer transition-all duration-200 ${styleClass} ${isDisabled ? 'pointer-events-none' : ''}">
                         <span class="flex items-center justify-center size-6 rounded-full border-2 border-slate-300 dark:border-slate-600 radio-circle flex-shrink-0">
@@ -376,142 +420,160 @@
                         ${icon}
                     </label>
                 `;
-                optionsContainer.appendChild(div);
-            });
-
-            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
-            if (currentQuestionIndex === 19) {
-                document.getElementById('next-btn').classList.add('hidden');
-                document.getElementById('submit-btn').classList.remove('hidden');
-            } else {
-                document.getElementById('next-btn').classList.remove('hidden');
-                document.getElementById('submit-btn').classList.add('hidden');
-            }
-        }
-
-        function selectAnswer(qId, answer) {
-            if (isPracticeMode && userAnswers[qId]) return;
-            userAnswers[qId] = answer;
-            if (isPracticeMode) {
-                renderQuestion();
-            } else {
-                // In random mode, just update UI without showing correct/wrong immediately
-                renderQuestion();
-            }
-        }
-
-        function nextQuestion() {
-            if (currentQuestionIndex < 19) {
-                currentQuestionIndex++;
-                renderQuestion();
-            }
-        }
-
-        function prevQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                renderQuestion();
-            }
-        }
-
-        async function submitQuiz() {
-            clearInterval(timerInterval);
-            document.getElementById('quiz-screen').classList.add('hidden');
-            document.getElementById('timer-container').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-
-            let correctCount = 0;
-            const details = [];
-            currentExamQuestions.forEach(q => {
-                const isCorrect = userAnswers[q.id] === q.answer;
-                if (isCorrect) {
-                    correctCount++;
-                }
-                details.push({
-                    questionId: q.id,
-                    isCorrect: isCorrect
+                    optionsContainer.appendChild(div);
                 });
-            });
 
-            document.getElementById('score-text').textContent = `${correctCount}/20`;
+                document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
 
-            const percentage = Math.round((correctCount / 20) * 100);
-            document.getElementById('score-percentage').textContent = `${percentage}%`;
-            setTimeout(() => {
-                document.getElementById('score-circle').setAttribute('stroke-dasharray', `${percentage}, 100`);
-            }, 100);
-
-            // Send result to server
-            try {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    await fetch('/api/exam/submit', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': token
-                        },
-                        body: JSON.stringify({
-                            exam_id: currentExamId,
-                            score: (correctCount / 20) * 10,
-                            details: details
-                        })
-                    });
+                if (currentQuestionIndex === 19) {
+                    document.getElementById('next-btn').classList.add('hidden');
+                    document.getElementById('submit-btn').classList.remove('hidden');
+                } else {
+                    document.getElementById('next-btn').classList.remove('hidden');
+                    document.getElementById('submit-btn').classList.add('hidden');
                 }
-            } catch (error) {
-                console.error('Error submitting result:', error);
             }
-        }
 
-        function showReview() {
-            document.getElementById('result-screen').classList.add('hidden');
-            document.getElementById('review-screen').classList.remove('hidden');
+            function selectAnswer(qId, answer) {
+                if (isPracticeMode && userAnswers[qId]) return;
+                userAnswers[qId] = answer;
+                renderQuestion();
+            }
 
-            const list = document.getElementById('review-list');
-            list.innerHTML = '';
+            function nextQuestion() {
+                if (currentQuestionIndex < 19) {
+                    currentQuestionIndex++;
+                    renderQuestion();
+                }
+            }
 
-            currentExamQuestions.forEach((q, index) => {
-                const userAns = userAnswers[q.id];
-                const isCorrect = userAns === q.answer;
-                const card = document.createElement('div');
-                card.className = `p-6 rounded-2xl border ${isCorrect ? 'border-green-200 bg-green-50/50 dark:bg-green-900/10 dark:border-green-900/30' : 'border-red-200 bg-red-50/50 dark:bg-red-900/10 dark:border-red-900/30'}`;
+            function prevQuestion() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    renderQuestion();
+                }
+            }
 
-                let optionsHtml = '';
-                q.options.forEach(opt => {
-                    let styleClass = 'border-slate-200 dark:border-slate-700';
-                    let icon = '';
-                    if (opt === q.answer) {
-                        styleClass = 'correct-answer font-medium';
-                        icon = '<span class="material-symbols-outlined text-green-500 ml-auto">check_circle</span>';
-                    } else if (opt === userAns && opt !== q.answer) {
-                        styleClass = 'wrong-answer';
-                        icon = '<span class="material-symbols-outlined text-red-500 ml-auto">cancel</span>';
+            async function submitQuiz() {
+                clearInterval(timerInterval);
+                document.getElementById('quiz-screen').classList.add('hidden');
+                document.getElementById('timer-container').classList.add('hidden');
+                document.getElementById('result-screen').classList.remove('hidden');
+
+                let correctCount = 0;
+                const details = [];
+
+                currentExamQuestions.forEach(q => {
+                    const isCorrect = userAnswers[q.id] === q.answer;
+                    if (isCorrect) correctCount++;
+                    details.push({ questionId: q.id, isCorrect: isCorrect });
+                });
+
+                document.getElementById('score-text').textContent = `${correctCount}/20`;
+                const percentage = Math.round((correctCount / 20) * 100);
+                document.getElementById('score-percentage').textContent = `${percentage}%`;
+
+                setTimeout(() => {
+                    document.getElementById('score-circle').setAttribute('stroke-dasharray', `${percentage}, 100`);
+                }, 100);
+
+                try {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        await fetch('/api/exam/submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': token
+                            },
+                            body: JSON.stringify({
+                                exam_id: currentExamId,
+                                score: (correctCount / 20) * 10,
+                                details: details
+                            })
+                        });
                     }
-                    optionsHtml += `<div class="flex items-center p-3 rounded-xl border ${styleClass} mb-2 bg-white dark:bg-slate-800"><span>${opt}</span>${icon}</div>`;
+                } catch (error) {
+                    console.error('Error submitting result:', error);
+                }
+            }
+
+            function showReview() {
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('review-screen').classList.remove('hidden');
+
+                const list = document.getElementById('review-list');
+                list.innerHTML = '';
+
+                currentExamQuestions.forEach((q, index) => {
+                    const userAns = userAnswers[q.id];
+                    const isCorrect = userAns === q.answer;
+                    const card = document.createElement('div');
+                    card.className = `p-6 rounded-2xl border ${isCorrect ? 'border-green-200 bg-green-50/50 dark:bg-green-900/10 dark:border-green-900/30' : 'border-red-200 bg-red-50/50 dark:bg-red-900/10 dark:border-red-900/30'}`;
+
+                    let optionsHtml = '';
+                    q.options.forEach(opt => {
+                        let styleClass = 'border-slate-200 dark:border-slate-700';
+                        let icon = '';
+
+                        if (opt === q.answer) {
+                            styleClass = 'correct-answer font-medium';
+                            icon = '<span class="material-symbols-outlined text-green-500 ml-auto">check_circle</span>';
+                        } else if (opt === userAns && opt !== q.answer) {
+                            styleClass = 'wrong-answer';
+                            icon = '<span class="material-symbols-outlined text-red-500 ml-auto">cancel</span>';
+                        }
+
+                        optionsHtml += `
+                        <div class="flex items-center p-3 rounded-xl border ${styleClass} mb-2 bg-white dark:bg-slate-800">
+                            <span>${opt}</span>
+                            ${icon}
+                        </div>
+                    `;
+                    });
+
+                    card.innerHTML = `
+                    <p class="font-bold text-lg text-slate-900 dark:text-white mb-4">Câu ${index + 1}: ${q.question}</p>
+                    <div class="flex flex-col gap-2">${optionsHtml}</div>
+                `;
+                    list.appendChild(card);
                 });
+            }
 
-                card.innerHTML = `<p class="font-bold text-lg text-slate-900 dark:text-white mb-4">Câu ${index + 1}: ${q.question}</p><div class="flex flex-col gap-2">${optionsHtml}</div>`;
-                list.appendChild(card);
-            });
-        }
+            function backToResult() {
+                document.getElementById('review-screen').classList.add('hidden');
+                document.getElementById('result-screen').classList.remove('hidden');
+            }
 
-        function backToResult() {
-            document.getElementById('review-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-        }
+            function continueQuiz() {
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('review-screen').classList.add('hidden');
+                document.getElementById('selection-screen').classList.remove('hidden');
 
-        function continueQuiz() {
-            document.getElementById('result-screen').classList.add('hidden');
-            document.getElementById('review-screen').classList.add('hidden');
-            document.getElementById('selection-screen').classList.remove('hidden');
+                userAnswers = {};
+                currentQuestionIndex = 0;
+                timeRemaining = 30 * 60;
+                currentExamQuestions = [];
+                initSelectionScreen();
+            }
 
-            userAnswers = {};
-            currentQuestionIndex = 0;
-            timeRemaining = 30 * 60;
-            currentExamQuestions = [];
-            initSelectionScreen();
-        }
-    </script>
+            function handleBackNavigation() {
+                const quizScreen = document.getElementById('quiz-screen');
+                if (!quizScreen.classList.contains('hidden')) {
+                    document.getElementById('exit-modal').classList.remove('hidden');
+                } else {
+                    window.location.href = 'home.html';
+                }
+            }
+
+            function confirmExit() {
+                window.location.href = 'home.html';
+            }
+
+            function cancelExit() {
+                document.getElementById('exit-modal').classList.add('hidden');
+            }
+        </script>
 </body>
 
 </html>

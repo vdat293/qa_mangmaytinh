@@ -1,0 +1,1102 @@
+[
+  {
+    "id": 601,
+    "question": "Đơn vị dữ liệu (PDU) tại lớp Network của mô hình OSI được gọi là gì?",
+    "options": [
+      "A. Frame",
+      "B. Segment",
+      "C. Packet",
+      "D. Bit"
+    ],
+    "answer": "C. Packet"
+  },
+  {
+    "id": 602,
+    "question": "Giao thức nào cung cấp dịch vụ truyền file tin cậy và có xác thực?",
+    "options": [
+      "A. TFTP",
+      "B. FTP",
+      "C. UDP",
+      "D. DHCP"
+    ],
+    "answer": "B. FTP"
+  },
+  {
+    "id": 603,
+    "question": "Lệnh nào được sử dụng để chuyển từ User EXEC mode sang Privileged EXEC mode trên thiết bị Cisco?",
+    "options": [
+      "A. configure terminal",
+      "B. enable",
+      "C. line console 0",
+      "D. exit"
+    ],
+    "answer": "B. enable"
+  },
+  {
+    "id": 604,
+    "question": "Địa chỉ MAC Broadcast có dạng như thế nào?",
+    "options": [
+      "A. 00-00-00-00-00-00",
+      "B. FF-FF-FF-FF-FF-FF",
+      "C. 192.168.1.255",
+      "D. 255.255.255.255"
+    ],
+    "answer": "B. FF-FF-FF-FF-FF-FF"
+  },
+  {
+    "id": 605,
+    "question": "Chức năng chính của giao thức ARP là gì?",
+    "options": [
+      "A. Phân giải tên miền thành địa chỉ IP.",
+      "B. Tự động cấp phát địa chỉ IP cho máy trạm.",
+      "C. Tìm địa chỉ MAC khi biết địa chỉ IP đích.",
+      "D. Định tuyến gói tin qua mạng Internet."
+    ],
+    "answer": "C. Tìm địa chỉ MAC khi biết địa chỉ IP đích."
+  },
+  {
+    "id": 606,
+    "question": "Dải địa chỉ IP nào sau đây là địa chỉ Private lớp C?",
+    "options": [
+      "A. 10.0.0.0/8",
+      "B. 172.16.0.0/12",
+      "C. 192.168.0.0/16",
+      "D. 127.0.0.0/8"
+    ],
+    "answer": "C. 192.168.0.0/16"
+  },
+  {
+    "id": 607,
+    "question": "Cổng (port) mặc định cho giao thức SSH là bao nhiêu?",
+    "options": [
+      "A. 23",
+      "B. 22",
+      "C. 80",
+      "D. 443"
+    ],
+    "answer": "B. 22"
+  },
+  {
+    "id": 608,
+    "question": "Lệnh nào dùng để lưu cấu hình đang chạy (running-config) vào NVRAM?",
+    "options": [
+      "A. copy startup-config running-config",
+      "B. copy running-config startup-config",
+      "C. save config",
+      "D. write memory"
+    ],
+    "answer": "B. copy running-config startup-config"
+  },
+  {
+    "id": 609,
+    "question": "Thiết bị nào hoạt động ở Lớp 1 (Physical) của mô hình OSI?",
+    "options": [
+      "A. Switch",
+      "B. Router",
+      "C. Hub",
+      "D. Firewall"
+    ],
+    "answer": "C. Hub"
+  },
+  {
+    "id": 610,
+    "question": "Đặc điểm nào sau đây mô tả đúng nhất về giao thức UDP?",
+    "options": [
+      "A. Hướng kết nối (connection-oriented).",
+      "B. Tin cậy, đảm bảo dữ liệu đến đích.",
+      "C. Phi kết nối (connectionless) và nỗ lực tối đa (best-effort).",
+      "D. Có cơ chế kiểm soát luồng (flow control)."
+    ],
+    "answer": "C. Phi kết nối (connectionless) và nỗ lực tối đa (best-effort)."
+  },
+  {
+    "id": 611,
+    "question": "Subnet mask mặc định cho địa chỉ lớp B là gì?",
+    "options": [
+      "A. 255.0.0.0",
+      "B. 255.255.0.0",
+      "C. 255.255.255.0",
+      "D. 255.255.255.255"
+    ],
+    "answer": "B. 255.255.0.0"
+  },
+  {
+    "id": 612,
+    "question": "Lệnh 'ping' sử dụng giao thức nào để kiểm tra kết nối?",
+    "options": [
+      "A. TCP",
+      "B. UDP",
+      "C. ICMP",
+      "D. HTTP"
+    ],
+    "answer": "C. ICMP"
+  },
+  {
+    "id": 613,
+    "question": "Loại cáp nào cần thiết để kết nối PC trực tiếp với Router (không qua Switch)?",
+    "options": [
+      "A. Cáp thẳng (Straight-through)",
+      "B. Cáp chéo (Crossover)",
+      "C. Cáp Console",
+      "D. Cáp quang"
+    ],
+    "answer": "B. Cáp chéo (Crossover)"
+  },
+  {
+    "id": 614,
+    "question": "Trường nào trong header của IPv4 được sử dụng để ngăn chặn gói tin lặp vô hạn trên mạng?",
+    "options": [
+      "A. Source IP Address",
+      "B. Destination IP Address",
+      "C. Time to Live (TTL)",
+      "D. Protocol"
+    ],
+    "answer": "C. Time to Live (TTL)"
+  },
+  {
+    "id": 615,
+    "question": "Kích thước nhỏ nhất của một Ethernet frame (không tính preamble) là bao nhiêu byte?",
+    "options": [
+      "A. 46 bytes",
+      "B. 64 bytes",
+      "C. 128 bytes",
+      "D. 1518 bytes"
+    ],
+    "answer": "B. 64 bytes"
+  },
+  {
+    "id": 616,
+    "question": "Địa chỉ IPv6 có độ dài bao nhiêu bit?",
+    "options": [
+      "A. 32 bit",
+      "B. 48 bit",
+      "C. 64 bit",
+      "D. 128 bit"
+    ],
+    "answer": "D. 128 bit"
+  },
+  {
+    "id": 617,
+    "question": "Mật khẩu được cấu hình bằng lệnh 'enable secret' được mã hóa bằng thuật toán nào mặc định trên Cisco IOS hiện đại?",
+    "options": [
+      "A. MD5",
+      "B. Scrypt",
+      "C. Type 7",
+      "D. AES"
+    ],
+    "answer": "A. MD5"
+  },
+  {
+    "id": 618,
+    "question": "Để cấu hình địa chỉ IP cho Switch nhằm mục đích quản lý từ xa, ta cần cấu hình trên interface nào?",
+    "options": [
+      "A. Interface Console",
+      "B. Interface Vlan 1 (SVI)",
+      "C. Interface FastEthernet 0/1",
+      "D. Interface Loopback 0"
+    ],
+    "answer": "B. Interface Vlan 1 (SVI)"
+  },
+  {
+    "id": 619,
+    "question": "Ba bước trong quá trình bắt tay ba bước (3-way handshake) của TCP là gì?",
+    "options": [
+      "A. SYN, SYN-ACK, ACK",
+      "B. ACK, SYN, FIN",
+      "C. SYN, ACK, FIN",
+      "D. PUSH, ACK, SYN"
+    ],
+    "answer": "A. SYN, SYN-ACK, ACK"
+  },
+  {
+    "id": 620,
+    "question": "Dịch vụ DNS hoạt động ở lớp nào của mô hình TCP/IP?",
+    "options": [
+      "A. Network Access",
+      "B. Internet",
+      "C. Transport",
+      "D. Application"
+    ],
+    "answer": "D. Application"
+  },
+    {
+    "id": 621,
+    "question": "Lớp nào trong mô hình OSI chịu trách nhiệm đóng gói dữ liệu thành frame?",
+    "options": [
+      "A. Physical",
+      "B. Data Link",
+      "C. Network",
+      "D. Transport"
+    ],
+    "answer": "B. Data Link"
+  },
+  {
+    "id": 622,
+    "question": "Giao thức nào được sử dụng để tự động cấp phát địa chỉ IP cho các thiết bị trong mạng?",
+    "options": [
+      "A. DNS",
+      "B. ARP",
+      "C. DHCP",
+      "D. ICMP"
+    ],
+    "answer": "C. DHCP"
+  },
+  {
+    "id": 623,
+    "question": "Địa chỉ IP 172.20.5.100 thuộc lớp địa chỉ nào?",
+    "options": [
+      "A. Class A",
+      "B. Class B",
+      "C. Class C",
+      "D. Class D"
+    ],
+    "answer": "B. Class B"
+  },
+  {
+    "id": 624,
+    "question": "Lệnh nào hiển thị bảng định tuyến trên Router Cisco?",
+    "options": [
+      "A. show ip route",
+      "B. show interfaces",
+      "C. show running-config",
+      "D. show arp"
+    ],
+    "answer": "A. show ip route"
+  },
+  {
+    "id": 625,
+    "question": "Số cổng (port) mặc định của giao thức HTTP là bao nhiêu?",
+    "options": [
+      "A. 21",
+      "B. 25",
+      "C. 80",
+      "D. 443"
+    ],
+    "answer": "C. 80"
+  },
+  {
+    "id": 626,
+    "question": "Thiết bị nào hoạt động ở Lớp 2 (Data Link) của mô hình OSI?",
+    "options": [
+      "A. Hub",
+      "B. Repeater",
+      "C. Switch",
+      "D. Router"
+    ],
+    "answer": "C. Switch"
+  },
+  {
+    "id": 627,
+    "question": "Trong địa chỉ IP 192.168.10.0/24, số lượng host tối đa có thể sử dụng là bao nhiêu?",
+    "options": [
+      "A. 254",
+      "B. 255",
+      "C. 256",
+      "D. 252"
+    ],
+    "answer": "A. 254"
+  },
+  {
+    "id": 628,
+    "question": "Giao thức nào hoạt động ở lớp Transport và cung cấp truyền dữ liệu tin cậy?",
+    "options": [
+      "A. IP",
+      "B. UDP",
+      "C. TCP",
+      "D. ICMP"
+    ],
+    "answer": "C. TCP"
+  },
+  {
+    "id": 629,
+    "question": "Lệnh nào được sử dụng để xem địa chỉ MAC của các thiết bị đã học trên Switch?",
+    "options": [
+      "A. show ip interface brief",
+      "B. show mac address-table",
+      "C. show arp",
+      "D. show vlan"
+    ],
+    "answer": "B. show mac address-table"
+  },
+  {
+    "id": 630,
+    "question": "Địa chỉ nào sau đây là địa chỉ Loopback?",
+    "options": [
+      "A. 192.168.1.1",
+      "B. 10.0.0.1",
+      "C. 127.0.0.1",
+      "D. 169.254.1.1"
+    ],
+    "answer": "C. 127.0.0.1"
+  },
+  {
+    "id": 631,
+    "question": "Chuẩn cáp Ethernet 1000BASE-T hỗ trợ tốc độ truyền dữ liệu tối đa là bao nhiêu?",
+    "options": [
+      "A. 100 Mbps",
+      "B. 1 Gbps",
+      "C. 10 Gbps",
+      "D. 100 Gbps"
+    ],
+    "answer": "B. 1 Gbps"
+  },
+  {
+    "id": 632,
+    "question": "Lệnh nào dùng để đặt tên cho thiết bị Cisco?",
+    "options": [
+      "A. name Router1",
+      "B. hostname Router1",
+      "C. set name Router1",
+      "D. device-name Router1"
+    ],
+    "answer": "B. hostname Router1"
+  },
+  {
+    "id": 633,
+    "question": "Giao thức HTTPS sử dụng cổng mặc định nào?",
+    "options": [
+      "A. 80",
+      "B. 8080",
+      "C. 443",
+      "D. 8443"
+    ],
+    "answer": "C. 443"
+  },
+  {
+    "id": 634,
+    "question": "Trong mô hình TCP/IP, lớp nào tương đương với lớp Network của mô hình OSI?",
+    "options": [
+      "A. Application",
+      "B. Transport",
+      "C. Internet",
+      "D. Network Access"
+    ],
+    "answer": "C. Internet"
+  },
+  {
+    "id": 635,
+    "question": "Địa chỉ 169.254.x.x được gọi là gì?",
+    "options": [
+      "A. Địa chỉ Private",
+      "B. Địa chỉ Public",
+      "C. Địa chỉ APIPA (Automatic Private IP Addressing)",
+      "D. Địa chỉ Multicast"
+    ],
+    "answer": "C. Địa chỉ APIPA (Automatic Private IP Addressing)"
+  },
+  {
+    "id": 636,
+    "question": "Lệnh nào hiển thị trạng thái tóm tắt của tất cả các interface trên Router?",
+    "options": [
+      "A. show interfaces",
+      "B. show ip interface brief",
+      "C. show running-config",
+      "D. show protocols"
+    ],
+    "answer": "B. show ip interface brief"
+  },
+  {
+    "id": 637,
+    "question": "Số cổng mặc định của giao thức Telnet là bao nhiêu?",
+    "options": [
+      "A. 21",
+      "B. 22",
+      "C. 23",
+      "D. 25"
+    ],
+    "answer": "C. 23"
+  },
+  {
+    "id": 638,
+    "question": "Địa chỉ MAC có độ dài bao nhiêu bit?",
+    "options": [
+      "A. 32 bit",
+      "B. 48 bit",
+      "C. 64 bit",
+      "D. 128 bit"
+    ],
+    "answer": "B. 48 bit"
+  },
+  {
+    "id": 639,
+    "question": "Chế độ cấu hình nào cho phép thay đổi cấu hình của một interface cụ thể?",
+    "options": [
+      "A. User EXEC mode",
+      "B. Privileged EXEC mode",
+      "C. Global Configuration mode",
+      "D. Interface Configuration mode"
+    ],
+    "answer": "D. Interface Configuration mode"
+  },
+  {
+    "id": 640,
+    "question": "Giao thức nào được sử dụng để gửi thông báo lỗi và chẩn đoán mạng?",
+    "options": [
+      "A. TCP",
+      "B. UDP",
+      "C. ICMP",
+      "D. ARP"
+    ],
+    "answer": "C. ICMP"
+  },
+  {
+    "id": 641,
+    "question": "Trong subnet mask /26, có bao nhiêu host có thể sử dụng được?",
+    "options": [
+      "A. 30",
+      "B. 62",
+      "C. 64",
+      "D. 126"
+    ],
+    "answer": "B. 62"
+  },
+  {
+    "id": 642,
+    "question": "Lệnh nào dùng để bật interface trên thiết bị Cisco?",
+    "options": [
+      "A. enable",
+      "B. start",
+      "C. no shutdown",
+      "D. activate"
+    ],
+    "answer": "C. no shutdown"
+  },
+  {
+    "id": 643,
+    "question": "Thiết bị nào có chức năng định tuyến gói tin giữa các mạng khác nhau?",
+    "options": [
+      "A. Hub",
+      "B. Switch",
+      "C. Bridge",
+      "D. Router"
+    ],
+    "answer": "D. Router"
+  },
+  {
+    "id": 644,
+    "question": "Giao thức FTP sử dụng hai cổng nào để hoạt động?",
+    "options": [
+      "A. 20 và 21",
+      "B. 22 và 23",
+      "C. 25 và 110",
+      "D. 80 và 443"
+    ],
+    "answer": "A. 20 và 21"
+  },
+  {
+    "id": 645,
+    "question": "Đơn vị dữ liệu (PDU) tại lớp Transport của mô hình OSI được gọi là gì?",
+    "options": [
+      "A. Frame",
+      "B. Packet",
+      "C. Segment",
+      "D. Bit"
+    ],
+    "answer": "C. Segment"
+  },
+  {
+    "id": 646,
+    "question": "Lệnh nào dùng để xóa toàn bộ cấu hình đã lưu trong NVRAM?",
+    "options": [
+      "A. delete running-config",
+      "B. erase startup-config",
+      "C. clear config",
+      "D. remove nvram"
+    ],
+    "answer": "B. erase startup-config"
+  },
+  {
+    "id": 647,
+    "question": "Địa chỉ IP nào sau đây không thể gán cho host?",
+    "options": [
+      "A. 192.168.1.1",
+      "B. 10.0.0.255",
+      "C. 172.16.0.1",
+      "D. 192.168.1.255/24"
+    ],
+    "answer": "D. 192.168.1.255/24"
+  },
+  {
+    "id": 648,
+    "question": "Chuẩn IEEE 802.3 định nghĩa công nghệ mạng nào?",
+    "options": [
+      "A. Token Ring",
+      "B. Ethernet",
+      "C. Wireless LAN",
+      "D. Bluetooth"
+    ],
+    "answer": "B. Ethernet"
+  },
+  {
+    "id": 649,
+    "question": "Lệnh nào hiển thị thông tin về phiên bản IOS và phần cứng của thiết bị Cisco?",
+    "options": [
+      "A. show version",
+      "B. show system",
+      "C. show hardware",
+      "D. show ios"
+    ],
+    "answer": "A. show version"
+  },
+  {
+    "id": 650,
+    "question": "Giao thức SMTP được sử dụng cho mục đích gì?",
+    "options": [
+      "A. Nhận email",
+      "B. Gửi email",
+      "C. Truyền file",
+      "D. Duyệt web"
+    ],
+    "answer": "B. Gửi email"
+  },
+  {
+    "id": 651,
+    "question": "Số cổng mặc định của giao thức SMTP là bao nhiêu?",
+    "options": [
+      "A. 21",
+      "B. 25",
+      "C. 110",
+      "D. 143"
+    ],
+    "answer": "B. 25"
+  },
+  {
+    "id": 652,
+    "question": "Trong mạng Ethernet, phương pháp truy cập môi trường truyền nào được sử dụng?",
+    "options": [
+      "A. Token Passing",
+      "B. CSMA/CD",
+      "C. Polling",
+      "D. TDMA"
+    ],
+    "answer": "B. CSMA/CD"
+  },
+  {
+    "id": 653,
+    "question": "Địa chỉ IP 224.0.0.5 thuộc loại địa chỉ nào?",
+    "options": [
+      "A. Unicast",
+      "B. Broadcast",
+      "C. Multicast",
+      "D. Anycast"
+    ],
+    "answer": "C. Multicast"
+  },
+  {
+    "id": 654,
+    "question": "Lệnh nào dùng để cấu hình mật khẩu cho cổng Console?",
+    "options": [
+      "A. password console",
+      "B. line console 0, password <pass>, login",
+      "C. set console password",
+      "D. console password <pass>"
+    ],
+    "answer": "B. line console 0, password <pass>, login"
+  },
+  {
+    "id": 655,
+    "question": "Kích thước tối đa của payload trong một Ethernet frame chuẩn là bao nhiêu byte?",
+    "options": [
+      "A. 46 bytes",
+      "B. 1000 bytes",
+      "C. 1500 bytes",
+      "D. 1518 bytes"
+    ],
+    "answer": "C. 1500 bytes"
+  },
+  {
+    "id": 656,
+    "question": "Giao thức nào dùng để đồng bộ thời gian giữa các thiết bị trong mạng?",
+    "options": [
+      "A. SNMP",
+      "B. NTP",
+      "C. SMTP",
+      "D. STP"
+    ],
+    "answer": "B. NTP"
+  },
+  {
+    "id": 657,
+    "question": "Trong địa chỉ IP 10.20.30.40/16, phần Network ID là gì?",
+    "options": [
+      "A. 10.0.0.0",
+      "B. 10.20.0.0",
+      "C. 10.20.30.0",
+      "D. 10.20.30.40"
+    ],
+    "answer": "B. 10.20.0.0"
+  },
+  {
+    "id": 658,
+    "question": "Lệnh 'traceroute' dùng để làm gì?",
+    "options": [
+      "A. Kiểm tra kết nối đến một host",
+      "B. Xác định đường đi của gói tin đến đích",
+      "C. Hiển thị bảng ARP",
+      "D. Cấu hình định tuyến"
+    ],
+    "answer": "B. Xác định đường đi của gói tin đến đích"
+  },
+  {
+    "id": 659,
+    "question": "Giao thức POP3 sử dụng cổng mặc định nào?",
+    "options": [
+      "A. 25",
+      "B. 110",
+      "C. 143",
+      "D. 993"
+    ],
+    "answer": "B. 110"
+  },
+  {
+    "id": 660,
+    "question": "Loại địa chỉ IPv6 nào bắt đầu bằng FE80::/10?",
+    "options": [
+      "A. Global Unicast",
+      "B. Link-Local",
+      "C. Unique Local",
+      "D. Multicast"
+    ],
+    "answer": "B. Link-Local"
+  },
+  {
+    "id": 661,
+    "question": "Lệnh nào dùng để xem cấu hình đang chạy trên thiết bị Cisco?",
+    "options": [
+      "A. show startup-config",
+      "B. show running-config",
+      "C. show config",
+      "D. show memory"
+    ],
+    "answer": "B. show running-config"
+  },
+  {
+    "id": 662,
+    "question": "Cổng nào được sử dụng bởi giao thức DNS?",
+    "options": [
+      "A. 23",
+      "B. 53",
+      "C. 67",
+      "D. 69"
+    ],
+    "answer": "B. 53"
+  },
+  {
+    "id": 663,
+    "question": "Trong cấu trúc địa chỉ IPv4, octet đầu tiên của địa chỉ lớp A có giá trị từ bao nhiêu đến bao nhiêu?",
+    "options": [
+      "A. 0-127",
+      "B. 1-126",
+      "C. 128-191",
+      "D. 192-223"
+    ],
+    "answer": "B. 1-126"
+  },
+  {
+    "id": 664,
+    "question": "Đặc điểm nào sau đây là của giao thức TCP?",
+    "options": [
+      "A. Phi kết nối",
+      "B. Không đảm bảo thứ tự gói tin",
+      "C. Sử dụng cơ chế bắt tay ba bước",
+      "D. Không có cơ chế báo nhận (ACK)"
+    ],
+    "answer": "C. Sử dụng cơ chế bắt tay ba bước"
+  },
+  {
+    "id": 665,
+    "question": "Lệnh nào dùng để vào chế độ Global Configuration trên thiết bị Cisco?",
+    "options": [
+      "A. enable",
+      "B. configure terminal",
+      "C. interface",
+      "D. config"
+    ],
+    "answer": "B. configure terminal"
+  },
+  {
+    "id": 666,
+    "question": "Subnet mask 255.255.255.192 tương đương với prefix length bao nhiêu?",
+    "options": [
+      "A. /24",
+      "B. /25",
+      "C. /26",
+      "D. /27"
+    ],
+    "answer": "C. /26"
+  },
+  {
+    "id": 667,
+    "question": "Giao thức TFTP sử dụng giao thức vận chuyển nào?",
+    "options": [
+      "A. TCP",
+      "B. UDP",
+      "C. ICMP",
+      "D. IP"
+    ],
+    "answer": "B. UDP"
+  },
+  {
+    "id": 668,
+    "question": "Cổng mặc định của giao thức TFTP là bao nhiêu?",
+    "options": [
+      "A. 20",
+      "B. 21",
+      "C. 67",
+      "D. 69"
+    ],
+    "answer": "D. 69"
+  },
+  {
+    "id": 669,
+    "question": "Lớp nào trong mô hình OSI chịu trách nhiệm mã hóa và nén dữ liệu?",
+    "options": [
+      "A. Application",
+      "B. Presentation",
+      "C. Session",
+      "D. Transport"
+    ],
+    "answer": "B. Presentation"
+  },
+  {
+    "id": 670,
+    "question": "Địa chỉ IP nào sau đây là địa chỉ Private lớp A?",
+    "options": [
+      "A. 172.16.0.0",
+      "B. 192.168.0.0",
+      "C. 10.0.0.0",
+      "D. 127.0.0.0"
+    ],
+    "answer": "C. 10.0.0.0"
+  },
+  {
+    "id": 671,
+    "question": "Lệnh nào hiển thị thông tin chi tiết về một interface cụ thể?",
+    "options": [
+      "A. show interface gi0/0",
+      "B. show ip brief",
+      "C. interface gi0/0",
+      "D. describe gi0/0"
+    ],
+    "answer": "A. show interface gi0/0"
+  },
+  {
+    "id": 672,
+    "question": "Giao thức IMAP sử dụng cổng mặc định nào?",
+    "options": [
+      "A. 25",
+      "B. 110",
+      "C. 143",
+      "D. 993"
+    ],
+    "answer": "C. 143"
+  },
+  {
+    "id": 673,
+    "question": "Trong quá trình đóng kết nối TCP, cờ nào được sử dụng?",
+    "options": [
+      "A. SYN",
+      "B. ACK",
+      "C. FIN",
+      "D. RST"
+    ],
+    "answer": "C. FIN"
+  },
+  {
+    "id": 674,
+    "question": "Lệnh nào dùng để cấu hình địa chỉ IP trên interface của Router?",
+    "options": [
+      "A. set ip address",
+      "B. ip address <ip> <subnet>",
+      "C. address ip",
+      "D. config ip"
+    ],
+    "answer": "B. ip address <ip> <subnet>"
+  },
+  {
+    "id": 675,
+    "question": "Số lượng mạng con (subnet) tối đa có thể tạo ra từ mạng /24 khi chia thành /28 là bao nhiêu?",
+    "options": [
+      "A. 8",
+      "B. 16",
+      "C. 32",
+      "D. 64"
+    ],
+    "answer": "B. 16"
+  },
+  {
+    "id": 676,
+    "question": "Chuẩn IEEE 802.11 định nghĩa công nghệ nào?",
+    "options": [
+      "A. Ethernet",
+      "B. Token Ring",
+      "C. Wireless LAN (Wi-Fi)",
+      "D. Bluetooth"
+    ],
+    "answer": "C. Wireless LAN (Wi-Fi)"
+  },
+  {
+    "id": 677,
+    "question": "Lệnh nào dùng để thiết lập mô tả cho một interface?",
+    "options": [
+      "A. name <description>",
+      "B. description <text>",
+      "C. label <text>",
+      "D. comment <text>"
+    ],
+    "answer": "B. description <text>"
+  },
+  {
+    "id": 678,
+    "question": "Giao thức DHCP client sử dụng cổng nào để gửi yêu cầu?",
+    "options": [
+      "A. 53",
+      "B. 67",
+      "C. 68",
+      "D. 69"
+    ],
+    "answer": "C. 68"
+  },
+  {
+    "id": 679,
+    "question": "Địa chỉ IP nào được sử dụng cho Limited Broadcast?",
+    "options": [
+      "A. 192.168.1.255",
+      "B. 255.255.255.255",
+      "C. 224.0.0.1",
+      "D. 0.0.0.0"
+    ],
+    "answer": "B. 255.255.255.255"
+  },
+  {
+    "id": 680,
+    "question": "Trong subnet /30, có bao nhiêu host có thể sử dụng được?",
+    "options": [
+      "A. 2",
+      "B. 4",
+      "C. 6",
+      "D. 8"
+    ],
+    "answer": "A. 2"
+  },
+  {
+    "id": 681,
+    "question": "Lệnh nào dùng để xem bảng ARP trên Router Cisco?",
+    "options": [
+      "A. show mac address-table",
+      "B. show arp",
+      "C. show ip neighbors",
+      "D. show table arp"
+    ],
+    "answer": "B. show arp"
+  },
+  {
+    "id": 682,
+    "question": "Giao thức nào được sử dụng để phân giải tên miền thành địa chỉ IP?",
+    "options": [
+      "A. ARP",
+      "B. RARP",
+      "C. DNS",
+      "D. DHCP"
+    ],
+    "answer": "C. DNS"
+  },
+  {
+    "id": 683,
+    "question": "Khoảng cách truyền tối đa của cáp UTP Cat5e trong mạng Ethernet là bao nhiêu?",
+    "options": [
+      "A. 50 mét",
+      "B. 100 mét",
+      "C. 150 mét",
+      "D. 200 mét"
+    ],
+    "answer": "B. 100 mét"
+  },
+  {
+    "id": 684,
+    "question": "Lệnh nào dùng để thoát khỏi chế độ cấu hình hiện tại và quay về chế độ trước đó?",
+    "options": [
+      "A. quit",
+      "B. exit",
+      "C. logout",
+      "D. back"
+    ],
+    "answer": "B. exit"
+  },
+  {
+    "id": 685,
+    "question": "Địa chỉ IPv6 ::1 tương đương với địa chỉ IPv4 nào?",
+    "options": [
+      "A. 0.0.0.0",
+      "B. 255.255.255.255",
+      "C. 127.0.0.1",
+      "D. 192.168.1.1"
+    ],
+    "answer": "C. 127.0.0.1"
+  },
+  {
+    "id": 686,
+    "question": "Giao thức SNMP sử dụng cổng UDP nào mặc định?",
+    "options": [
+      "A. 25",
+      "B. 53",
+      "C. 123",
+      "D. 161"
+    ],
+    "answer": "D. 161"
+  },
+  {
+    "id": 687,
+    "question": "Lớp nào trong mô hình OSI quản lý việc thiết lập, duy trì và kết thúc phiên làm việc?",
+    "options": [
+      "A. Application",
+      "B. Presentation",
+      "C. Session",
+      "D. Transport"
+    ],
+    "answer": "C. Session"
+  },
+  {
+    "id": 688,
+    "question": "Lệnh nào dùng để mã hóa tất cả mật khẩu dạng clear-text trong cấu hình?",
+    "options": [
+      "A. encrypt passwords",
+      "B. service password-encryption",
+      "C. enable secret",
+      "D. password encrypt"
+    ],
+    "answer": "B. service password-encryption"
+  },
+  {
+    "id": 689,
+    "question": "Trong header TCP, trường nào xác định ứng dụng đích?",
+    "options": [
+      "A. Source Port",
+      "B. Destination Port",
+      "C. Sequence Number",
+      "D. Acknowledgment Number"
+    ],
+    "answer": "B. Destination Port"
+  },
+  {
+    "id": 690,
+    "question": "Địa chỉ IP 192.168.1.0/24 có broadcast address là gì?",
+    "options": [
+      "A. 192.168.1.0",
+      "B. 192.168.1.1",
+      "C. 192.168.1.254",
+      "D. 192.168.1.255"
+    ],
+    "answer": "D. 192.168.1.255"
+  },
+  {
+    "id": 691,
+    "question": "Giao thức Syslog sử dụng cổng UDP nào mặc định?",
+    "options": [
+      "A. 161",
+      "B. 514",
+      "C. 520",
+      "D. 1812"
+    ],
+    "answer": "B. 514"
+  },
+  {
+    "id": 692,
+    "question": "Lệnh nào hiển thị thông tin về các VLAN được cấu hình trên Switch?",
+    "options": [
+      "A. show interfaces",
+      "B. show vlan brief",
+      "C. show ip route",
+      "D. show mac table"
+    ],
+    "answer": "B. show vlan brief"
+  },
+  {
+    "id": 693,
+    "question": "Trong cáp UTP, có bao nhiêu cặp dây xoắn?",
+    "options": [
+      "A. 2 cặp",
+      "B. 3 cặp",
+      "C. 4 cặp",
+      "D. 8 cặp"
+    ],
+    "answer": "C. 4 cặp"
+  },
+  {
+    "id": 694,
+    "question": "Giao thức nào được sử dụng để quản lý và giám sát thiết bị mạng từ xa?",
+    "options": [
+      "A. SMTP",
+      "B. SNMP",
+      "C. DHCP",
+      "D. DNS"
+    ],
+    "answer": "B. SNMP"
+  },
+  {
+    "id": 695,
+    "question": "Lệnh nào dùng để cấu hình default gateway trên Switch Layer 2?",
+    "options": [
+      "A. ip route 0.0.0.0 0.0.0.0 <gateway>",
+      "B. ip default-gateway <gateway>",
+      "C. gateway <gateway>",
+      "D. default route <gateway>"
+    ],
+    "answer": "B. ip default-gateway <gateway>"
+  },
+  {
+    "id": 696,
+    "question": "Địa chỉ IP 172.31.255.255/16 là loại địa chỉ gì?",
+    "options": [
+      "A. Network Address",
+      "B. Host Address",
+      "C. Broadcast Address",
+      "D. Multicast Address"
+    ],
+    "answer": "C. Broadcast Address"
+  },
+  {
+    "id": 697,
+    "question": "Chuẩn cáp nào sử dụng connector RJ-45?",
+    "options": [
+      "A. Coaxial",
+      "B. UTP/STP",
+      "C. Fiber Optic",
+      "D. Serial"
+    ],
+    "answer": "B. UTP/STP"
+  },
+  {
+    "id": 698,
+    "question": "Lệnh 'end' trong Cisco IOS có chức năng gì?",
+    "options": [
+      "A. Thoát khỏi User EXEC mode",
+      "B. Quay về chế độ cấu hình trước đó",
+      "C. Quay thẳng về Privileged EXEC mode",
+      "D. Khởi động lại thiết bị"
+    ],
+    "answer": "C. Quay thẳng về Privileged EXEC mode"
+  },
+  {
+    "id": 699,
+    "question": "Trong trường hợp nào cần sử dụng cáp thẳng (straight-through)?",
+    "options": [
+      "A. Kết nối PC với PC",
+      "B. Kết nối Switch với Switch",
+      "C. Kết nối PC với Switch",
+      "D. Kết nối Router với Router"
+    ],
+    "answer": "C. Kết nối PC với Switch"
+  },
+  {
+    "id": 700,
+    "question": "Giao thức NTP sử dụng cổng nào?",
+    "options": [
+      "A. 53",
+      "B. 67",
+      "C. 123",
+      "D. 161"
+    ],
+    "answer": "C. 123"
+  }
+]
