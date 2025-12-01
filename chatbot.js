@@ -4,8 +4,9 @@ import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 const API_KEY = "AIzaSyD6mOlztwBGl21ZTcXz2xjNQL476EhDK0g";
 const MODEL_NAME = "gemini-2.5-flash";
 const systemInstruction = `
-    Bạn tên là Nor.
-    Bạn là ngôn ngữ lớn do google tạo ra và được sốp Đạt tích hợp vào  "Nhóm 8386" để hỗ trợ giải thích trong quá trình tự học.
+    Bạn tên là Nor, tiền thân là Gemini một mô hình ngôn ngữ lớn do google tạo ra và được sốp Đạt tích hợp vào "Nhóm 8386" để hỗ trợ giải thích trong quá trình tự học.
+    Bạn hãy trả lời ngắn gọn, dễ hiểu, đúng trọng tâm của câu hỏi.
+    Bạn hãy nhớ kỹ là "sốp Đạt" chứ không phải là sếp hay gì nhé.
     Bạn chỉ được trả lời dựa trên dữ liệu thật của bạn không được bịa
     Phong cách trả lời: Vui vẻ, dùng nhiều emoji.
 `;
@@ -18,6 +19,10 @@ const styles = `
         right: 24px;
         z-index: 9999;
         font-family: 'Lexend', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 16px;
     }
 
     /* Toggle Button */
@@ -93,6 +98,95 @@ const styles = `
     #gemini-chat-window.open {
         transform: scale(1);
         opacity: 1;
+    }
+
+    /* Suggestion Bubble (Quick Replies) */
+    #gemini-suggestion {
+        background: white;
+        padding: 16px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        max-width: 300px;
+        transform-origin: bottom right;
+        animation: slideInUp 0.3s ease-out;
+        border: 1px solid rgba(0,0,0,0.05);
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .dark #gemini-suggestion {
+        background: #1e293b;
+        border-color: rgba(255,255,255,0.1);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    #gemini-suggestion.visible {
+        display: flex;
+    }
+
+    .suggestion-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #334155;
+        font-size: 14px;
+    }
+
+    .dark .suggestion-header {
+        color: #e2e8f0;
+    }
+
+    .suggestion-text {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .dark .suggestion-text {
+        color: #94a3b8;
+    }
+
+    .quick-replies {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+
+    .quick-reply-btn {
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 13px;
+        color: #334155;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+
+    .dark .quick-reply-btn {
+        background: #0f172a;
+        border-color: #334155;
+        color: #e2e8f0;
+    }
+
+    .quick-reply-btn:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        transform: translateY(-1px);
+    }
+
+    .dark .quick-reply-btn:hover {
+        background: #1e293b;
+        border-color: #475569;
+    }
+
+    @keyframes slideInUp {
+        from { opacity: 0; transform: translateY(20px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     /* Header */
@@ -288,6 +382,20 @@ const styles = `
 
 const html = `
     <div id="gemini-chat-widget">
+        <!-- Suggestion Bubble -->
+        <div id="gemini-suggestion">
+            <div class="suggestion-header">
+                <span style="font-size: 18px;">✨</span>
+                <span>Nor trợ lý ảo</span>
+            </div>
+            <div class="suggestion-text" id="suggestion-text">
+                <!-- Text injected via JS -->
+            </div>
+            <div class="quick-replies" id="quick-replies-container">
+                <!-- Buttons injected via JS -->
+            </div>
+        </div>
+
         <div id="gemini-chat-window">
             <div class="chat-header">
                 <div class="header-icon">✨</div>
@@ -351,6 +459,9 @@ class GeminiChat {
         this.messagesContainer = document.getElementById("gemini-messages");
         this.input = document.getElementById("gemini-input");
         this.sendBtn = document.getElementById("gemini-send");
+        this.suggestionBox = document.getElementById("gemini-suggestion");
+        this.suggestionText = document.getElementById("suggestion-text");
+        this.quickRepliesContainer = document.getElementById("quick-replies-container");
     }
 
     initEvents() {
@@ -382,7 +493,10 @@ class GeminiChat {
     toggleChat() {
         this.window.classList.toggle("open");
         this.toggleBtn.classList.toggle("open");
+
+        // Hide suggestion when chat opens
         if (this.window.classList.contains("open")) {
+            this.hideSuggestion();
             setTimeout(() => this.input.focus(), 300);
         }
     }
@@ -434,12 +548,15 @@ class GeminiChat {
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
     }
 
-    async sendMessage() {
-        const text = this.input.value.trim();
+    async sendMessage(customText = null) {
+        const text = customText || this.input.value.trim();
         if (!text) return;
 
-        this.input.value = "";
-        this.input.style.height = "auto";
+        if (!customText) {
+            this.input.value = "";
+            this.input.style.height = "auto";
+        }
+
         this.addMessage(text, true);
 
         this.input.disabled = true;
@@ -469,9 +586,10 @@ class GeminiChat {
         } finally {
             this.input.disabled = false;
             this.sendBtn.disabled = false;
-            this.input.focus();
+            if (!customText) this.input.focus();
         }
     }
+
     updateContext(additionalContext) {
         const genAI = new GoogleGenerativeAI(API_KEY);
         this.model = genAI.getGenerativeModel({
@@ -489,13 +607,40 @@ class GeminiChat {
 
     showWidget() {
         if (this.widget) {
-            this.widget.style.display = 'block';
+            this.widget.style.display = 'flex';
         }
     }
 
     hideWidget() {
         if (this.widget) {
             this.widget.style.display = 'none';
+        }
+    }
+
+    showSuggestion(text, replies = []) {
+        if (!this.suggestionBox) return;
+
+        this.suggestionText.textContent = text;
+        this.quickRepliesContainer.innerHTML = '';
+
+        replies.forEach(reply => {
+            const btn = document.createElement('button');
+            btn.className = 'quick-reply-btn';
+            btn.textContent = reply;
+            btn.onclick = () => {
+                this.open();
+                this.sendMessage(reply);
+                this.hideSuggestion();
+            };
+            this.quickRepliesContainer.appendChild(btn);
+        });
+
+        this.suggestionBox.classList.add('visible');
+    }
+
+    hideSuggestion() {
+        if (this.suggestionBox) {
+            this.suggestionBox.classList.remove('visible');
         }
     }
 }

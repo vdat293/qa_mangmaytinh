@@ -543,8 +543,12 @@
 
                 window.geminiChat.updateContext(context);
                 window.geminiChat.showWidget();
-                window.geminiChat.open();
-                window.geminiChat.addMessage("Bạn cần giúp gì không? Mình có thể giải thích chi tiết các câu hỏi trong đề thi này cho bạn.", false);
+
+                // Show Quick Reply Suggestion
+                window.geminiChat.showSuggestion(
+                    "Bạn cần giúp gì không? Mình có thể giải thích chi tiết các câu hỏi trong đề thi này cho bạn.",
+                    ["Giải thích chi tiết", "Tổng hợp kiến thức"]
+                );
             }
 
             const list = document.getElementById('review-list');
