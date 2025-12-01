@@ -1,8 +1,4 @@
-import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
-
 // --- CONFIGURATION ---
-const API_KEY = "AIzaSyD6mOlztwBGl21ZTcXz2xjNQL476EhDK0g";
-const MODEL_NAME = "gemini-2.5-flash";
 const systemInstruction = `
     Bạn tên là Nor, tiền thân là Gemini một mô hình ngôn ngữ lớn do google tạo ra và được sốp Đạt tích hợp vào "Nhóm 8386" để hỗ trợ giải thích trong quá trình tự học.
     Bạn hãy trả lời ngắn gọn, dễ hiểu, đúng trọng tâm của câu hỏi.
@@ -436,8 +432,8 @@ class GeminiChat {
         this.injectHTML();
         this.initElements();
         this.initEvents();
-        this.initAI();
         this.chatHistory = [];
+        this.currentContext = "";
     }
 
     injectStyles() {
@@ -479,14 +475,6 @@ class GeminiChat {
         this.input.addEventListener("input", function () {
             this.style.height = "auto";
             this.style.height = Math.min(this.scrollHeight, 100) + "px";
-        });
-    }
-
-    initAI() {
-        const genAI = new GoogleGenerativeAI(API_KEY);
-        this.model = genAI.getGenerativeModel({
-            model: MODEL_NAME,
-            systemInstruction: systemInstruction
         });
     }
 
@@ -564,19 +552,34 @@ class GeminiChat {
         this.showTyping();
 
         try {
-            this.chatHistory.push({ role: "user", parts: [{ text: text }] });
+            const token = localStorage.getItem('token');
+            const fullContext = systemInstruction + (this.currentContext ? "\n\n" + this.currentContext : "");
 
-            const chat = this.model.startChat({
-                history: this.chatHistory.slice(0, -1),
+            const response = await fetch('/api/ai/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify({
+                    message: text,
+                    history: this.chatHistory,
+                    context: fullContext
+                })
             });
 
-            const result = await chat.sendMessage(text);
-            const response = await result.response;
-            const responseText = response.text();
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to get AI response');
+            }
+
+            const responseText = data.text;
 
             this.hideTyping();
             this.addMessage(responseText, false);
 
+            this.chatHistory.push({ role: "user", parts: [{ text: text }] });
             this.chatHistory.push({ role: "model", parts: [{ text: responseText }] });
 
         } catch (error) {
@@ -591,11 +594,7 @@ class GeminiChat {
     }
 
     updateContext(additionalContext) {
-        const genAI = new GoogleGenerativeAI(API_KEY);
-        this.model = genAI.getGenerativeModel({
-            model: MODEL_NAME,
-            systemInstruction: systemInstruction + "\n\n" + additionalContext
-        });
+        this.currentContext = additionalContext;
         this.chatHistory = []; // Reset history with new context
     }
 

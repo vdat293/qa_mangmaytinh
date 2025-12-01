@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,10 +8,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
 const ExamAttempt = require('./models/ExamAttempt');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key_here';
+
+// Initialize Gemini AI
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 // Connect to Database
 connectDB();
@@ -194,6 +200,29 @@ app.get('/api/admin/question-stats', verifyToken, verifyAdmin, async (req, res) 
         res.status(200).json(stats);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+});
+
+// AI Chat Route
+app.post('/api/ai/chat', verifyToken, async (req, res) => {
+    try {
+        const { message, history, context } = req.body;
+
+        // Construct the full prompt with context
+        const fullPrompt = context ? `${context}\n\nUser Question: ${message}` : message;
+
+        const chat = model.startChat({
+            history: history || [],
+        });
+
+        const result = await chat.sendMessage(fullPrompt);
+        const response = await result.response;
+        const text = response.text();
+
+        res.status(200).json({ text });
+    } catch (error) {
+        console.error("AI Error:", error);
+        res.status(500).json({ message: "Failed to process AI request." });
     }
 });
 
