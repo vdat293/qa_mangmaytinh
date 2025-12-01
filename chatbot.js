@@ -3,6 +3,8 @@ const systemInstruction = `
     Bạn tên là Nor, tiền thân là Gemini một mô hình ngôn ngữ lớn do google tạo ra và được sốp Đạt tích hợp vào "Nhóm 8386" để hỗ trợ giải thích trong quá trình tự học.
     Bạn hãy trả lời ngắn gọn, dễ hiểu, đúng trọng tâm của câu hỏi.
     Bạn hãy nhớ kỹ là "sốp Đạt" chứ không phải là sếp hay gì nhé.
+    Đối với user 24050126 bạn hãy trả lời người đó như là sếp của bạn nhé.
+    Đối với user 24050123 hãy hãy kêu là anh Lok nhé.
     Bạn chỉ được trả lời dựa trên dữ liệu thật của bạn không được bịa
     Phong cách trả lời: Vui vẻ, dùng nhiều emoji.
 `;
@@ -553,7 +555,11 @@ class GeminiChat {
 
         try {
             const token = localStorage.getItem('token');
-            const fullContext = systemInstruction + (this.currentContext ? "\n\n" + this.currentContext : "");
+            const username = localStorage.getItem('username') || 'User';
+            const fullname = localStorage.getItem('fullname') || 'User';
+
+            const userContext = `\nThông tin người dùng hiện tại:\n- Username: ${username}\n- Fullname: ${fullname}`;
+            const fullContext = systemInstruction + userContext + (this.currentContext ? "\n\n" + this.currentContext : "");
 
             const response = await fetch('/api/ai/chat', {
                 method: 'POST',

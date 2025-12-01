@@ -37,7 +37,30 @@ class AdminAIChat {
         });
     }
 
+    async fetchData(url) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(url, {
+                headers: { 'Authorization': token }
+            });
+            if (response.ok) {
+                return await response.json();
+            }
+        } catch (error) {
+            console.error(`Error fetching data from ${url}:`, error);
+        }
+        return null;
+    }
+
     async gatherContext() {
+        // Ensure data is loaded
+        if (!window.allUserStats) {
+            window.allUserStats = await this.fetchData('/api/admin/stats');
+        }
+        if (!window.allQuestionStats) {
+            window.allQuestionStats = await this.fetchData('/api/admin/question-stats');
+        }
+
         let context = "DỮ LIỆU HIỆN TẠI:\n\n";
 
         // 1. Questions Data
@@ -61,7 +84,7 @@ class AdminAIChat {
             ).join('\n');
             context += userStatsSimple + "\n\n";
         } else {
-            context += "--- THỐNG KÊ NGƯỜI DÙNG: Chưa có dữ liệu (Admin cần xem tab Statistics để tải dữ liệu) ---\n\n";
+            context += "--- THỐNG KÊ NGƯỜI DÙNG: Chưa có dữ liệu (Lỗi tải dữ liệu) ---\n\n";
         }
 
         // 3. Question Stats
@@ -72,7 +95,7 @@ class AdminAIChat {
             ).join('\n');
             context += qStatsSimple + "\n\n";
         } else {
-            context += "--- THỐNG KÊ CÂU HỎI: Chưa có dữ liệu (Admin cần xem tab Question Stats để tải dữ liệu) ---\n\n";
+            context += "--- THỐNG KÊ CÂU HỎI: Chưa có dữ liệu (Lỗi tải dữ liệu) ---\n\n";
         }
 
         return context;
@@ -164,8 +187,12 @@ class AdminAIChat {
 
         try {
             const dataContext = await this.gatherContext();
-            const fullContext = SYSTEM_INSTRUCTION + "\n\n" + dataContext;
             const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username') || 'Admin';
+            const fullname = localStorage.getItem('fullname') || 'Admin';
+
+            const userContext = `\nThông tin người dùng hiện tại (Admin):\n- Username: ${username}\n- Fullname: ${fullname}`;
+            const fullContext = SYSTEM_INSTRUCTION + userContext + "\n\n" + dataContext;
 
             const response = await fetch('/api/ai/chat', {
                 method: 'POST',
