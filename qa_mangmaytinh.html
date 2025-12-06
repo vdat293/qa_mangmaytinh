@@ -207,6 +207,56 @@
                         Another Quiz</button>
                 </div>
             </div>
+
+            <!-- Screen 5: Reward (Midterm Challenge Success) -->
+            <div id="reward-screen" class="hidden flex flex-col items-center gap-8 text-center py-10 animate-fade-in">
+                <div class="relative">
+                    <div
+                        class="size-32 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-2xl shadow-amber-500/50 animate-pulse">
+                        <span class="material-symbols-outlined text-6xl text-white">emoji_events</span>
+                    </div>
+                    <div
+                        class="absolute -top-2 -right-2 size-10 rounded-full bg-green-500 flex items-center justify-center shadow-lg">
+                        <span class="material-symbols-outlined text-2xl text-white">check</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">🎉 Chúc mừng bạn!</h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 max-w-md">
+                        Bạn đã hoàn thành thử thách giữa kì thành công! Đây là link Drive hướng dẫn làm bài giữa kì dành
+                        cho bạn.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 max-w-md w-full">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="size-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                            <span
+                                class="material-symbols-outlined text-2xl text-blue-600 dark:text-blue-400">folder_open</span>
+                        </div>
+                        <div class="text-left">
+                            <h4 class="font-bold text-slate-900 dark:text-white">Tài liệu hướng dẫn</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Google Drive</p>
+                        </div>
+                    </div>
+                    <a href="https://drive.google.com/drive/folders/1a6mF3Yo3DMFOy7WOw3vCKnXtanbhCyey?usp=sharing"
+                        target="_blank"
+                        class="block w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-0.5 text-center">
+                        <span class="flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">open_in_new</span>
+                            Mở Link Phần Thưởng
+                        </span>
+                    </a>
+                </div>
+
+                <a href="home.html"
+                    class="text-slate-500 hover:text-blue-600 font-medium transition-colors mt-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    Quay về trang chủ
+                </a>
+            </div>
         </div>
     </main>
 
@@ -247,6 +297,9 @@
                     clearInterval(checkChatbot);
                 }
             }, 100);
+
+            // Check if coming from midterm challenge
+            checkMidtermMode();
         });
     </script>
     <script>
@@ -258,6 +311,7 @@
         let currentExamId = '';
         let userAnswers = {};
         let currentExamQuestions = [];
+        let isMidtermChallenge = false;
 
         // Initialize with data from qa_data.js
         if (typeof allQuestionsData !== 'undefined') {
@@ -266,6 +320,15 @@
         } else {
             console.error('Error: qa_data.js not loaded or empty');
             alert('Không thể tải dữ liệu câu hỏi. Vui lòng kiểm tra file qa_data.js');
+        }
+
+        function checkMidtermMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'midterm' && localStorage.getItem('midtermChallenge') === 'true') {
+                isMidtermChallenge = true;
+                // Auto start random exam for midterm challenge
+                startExam('random');
+            }
         }
 
         function initSelectionScreen() {
@@ -483,7 +546,6 @@
             clearInterval(timerInterval);
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('timer-container').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
 
             if (window.geminiChat) {
                 window.geminiChat.hideWidget();
@@ -498,13 +560,33 @@
                 details.push({ questionId: q.id, isCorrect: isCorrect });
             });
 
-            document.getElementById('score-text').textContent = `${correctCount}/20`;
             const percentage = Math.round((correctCount / 20) * 100);
-            document.getElementById('score-percentage').textContent = `${percentage}%`;
 
-            setTimeout(() => {
-                document.getElementById('score-circle').setAttribute('stroke-dasharray', `${percentage}, 100`);
-            }, 100);
+            // Check if this is midterm challenge and score >= 80%
+            if (isMidtermChallenge && percentage >= 80) {
+                // Show reward screen
+                document.getElementById('reward-screen').classList.remove('hidden');
+                // Clear midterm challenge flag
+                localStorage.removeItem('midtermChallenge');
+                isMidtermChallenge = false;
+            } else {
+                // Show regular result screen
+                document.getElementById('result-screen').classList.remove('hidden');
+
+                document.getElementById('score-text').textContent = `${correctCount}/20`;
+                document.getElementById('score-percentage').textContent = `${percentage}%`;
+
+                setTimeout(() => {
+                    document.getElementById('score-circle').setAttribute('stroke-dasharray', `${percentage}, 100`);
+                }, 100);
+
+                // If midterm challenge but didn't pass, show message
+                if (isMidtermChallenge && percentage < 80) {
+                    alert(`Bạn đạt ${percentage}%, cần đạt 80% để nhận phần thưởng. Hãy thử lại!`);
+                    localStorage.removeItem('midtermChallenge');
+                    isMidtermChallenge = false;
+                }
+            }
 
             try {
                 const authToken = localStorage.getItem('token');
@@ -600,12 +682,15 @@
         function continueQuiz() {
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('review-screen').classList.add('hidden');
+            document.getElementById('reward-screen').classList.add('hidden');
             document.getElementById('selection-screen').classList.remove('hidden');
 
             userAnswers = {};
             currentQuestionIndex = 0;
             timeRemaining = 30 * 60;
             currentExamQuestions = [];
+            isMidtermChallenge = false;
+            localStorage.removeItem('midtermChallenge');
             if (window.geminiChat) {
                 window.geminiChat.hideWidget();
             }
@@ -617,11 +702,14 @@
             if (!quizScreen.classList.contains('hidden')) {
                 document.getElementById('exit-modal').classList.remove('hidden');
             } else {
+                // Clear midterm challenge flag when going back
+                localStorage.removeItem('midtermChallenge');
                 window.location.href = 'home.html';
             }
         }
 
         function confirmExit() {
+            localStorage.removeItem('midtermChallenge');
             window.location.href = 'home.html';
         }
 
